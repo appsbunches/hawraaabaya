@@ -1,0 +1,215 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:entaj/src/entities/product_details_model.dart';
+import 'package:entaj/src/utils/custom_widget/custom_text.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:loop_page_view/loop_page_view.dart';
+import 'package:lottie/lottie.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:video_player/video_player.dart';
+import '../../../app_config.dart';
+import '../../../colors.dart';
+import '../../../data/hive/wishlist/hive_controller.dart';
+import '../../../data/hive/wishlist/wishlist_model.dart';
+import '../../../data/shared_preferences/pref_manger.dart';
+import '../../../entities/home_screen_model.dart';
+import '../../../services/app_events.dart';
+import '../../../utils/custom_widget/custom_image.dart';
+import '../../../utils/custom_widget/custom_indicator.dart';
+import '../../../utils/functions.dart';
+
+import 'package:youtube_player_flutter/youtube_player_flutter.dart' as y;
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
+import '../../_auth/login/view.dart';
+import '../logic.dart';
+
+class SliderWidget extends StatefulWidget {
+  List<Images> sliderItems;
+
+  SliderWidget({required this.sliderItems, Key? key}) : super(key: key);
+
+  @override
+  State<SliderWidget> createState() => _SliderWidgetState();
+}
+
+class _SliderWidgetState extends State<SliderWidget> {
+  final LoopPageController pageController = LoopPageController(initialPage: 0);
+  final PrefManger _prefManger = Get.find();
+  bool loopStarted = false;
+  bool clicked = false;
+  int currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    startLoop();
+  }
+
+  void startLoop() async {
+    if (loopStarted) return;
+    loopStarted = true;
+    Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+      if (currentPage < widget.sliderItems.length) {
+        currentPage++;
+      } else {
+        currentPage = 0;
+      }
+
+      try {
+        pageController.animateToPage(
+          currentPage,
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeIn,
+        );
+      } catch (e) {}
+    });
+  }
+
+  onPageChanged(page) {
+    currentPage = page;
+    setState(() {});
+  }
+
+  List<Widget> buildPageIndicator() {
+    List<Widget> list = [];
+    for (int i = 0; i < widget.sliderItems.length; i++) {
+      list.add(i == currentPage ? const CustomIndicator(true) : const CustomIndicator(false));
+    }
+    return list;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<ProductDetailsLogic>(
+        init: Get.find<ProductDetailsLogic>(),
+        id: 'images',
+        builder: (logic) {
+          return AspectRatio(
+            aspectRatio: 1,
+            child: Stack(
+              children: [
+                PositionedDirectional(
+                  start: 0,
+                  end: 0,
+                  bottom: 0,
+                  top: 0,
+                  child: widget.sliderItems.isEmpty
+                      ? const Padding(
+                        padding: EdgeInsets.all(30.0),
+                        child: CustomImage(
+                            url: "",
+                            width: double.infinity,
+                            size: 50,
+                          ),
+                      )
+                      : LoopPageView.builder(
+                          onPageChanged: onPageChanged,
+                          itemCount: widget.sliderItems.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () => logic.goToImages(logic.productModel?.images, index),
+                              child: CustomImage(
+                                url: widget.sliderItems[index].image?.fullSize ?? '',
+                                width: double.infinity,
+                                size: 80,
+                                fit: BoxFit.cover,
+                              )
+                              //  showVideoProgressIndicator: true,
+                              ,
+                            );
+                          },
+                          controller: pageController,
+                          physics: const ClampingScrollPhysics(),
+                        ),
+                ),
+                if (AppConfig.isEnableWishlist)
+                  PositionedDirectional(
+                      start: 10,
+                      width: 40.sp,
+                      height: 40.sp,
+                      bottom: 10,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white, borderRadius: BorderRadius.circular(100.sp)),
+                      )),
+                if (AppConfig.isEnableWishlist)
+                  PositionedDirectional(
+                      start: -30.sp,
+                      width: 120.sp,
+                      height: 120.sp,
+                      bottom: -31.5.sp,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (!await _prefManger.getIsLogin()) {
+                            Get.to(LoginPage());
+                            return;
+                          }
+                          final AppEvents _appEvents = Get.find();
+
+                          _appEvents.logAddToWishlist(logic.productModel?.name,
+                              logic.productModel?.id, logic.productModel?.price);
+                          var model = WishlistModel(
+                            productId: logic.productModel?.id,
+                            productName: logic.productModel?.name,
+                            productImage: logic.productModel?.images?.isNotEmpty == true
+                                ? (logic.productModel?.images?[0].image?.small)
+                                : null,
+                            productQuantity: logic.productModel?.quantity ?? 1,
+                            productPrice: logic.productModel?.price ?? 0,
+                            productSalePrice: logic.productModel?.salePrice ?? 0,
+                            productFormattedPrice: logic.productModel?.formattedPrice,
+                            productFormattedSalePrice: logic.productModel?.formattedSalePrice,
+                            productHasFields: logic.productModel?.hasFields ?? false,
+                            productHasOptions: logic.productModel?.hasOptions ?? false,
+                          );
+                          if (HiveController.getWishlist().get(logic.productModel?.id) == null) {
+                            await HiveController.getWishlist().put(logic.productModel?.id, model);
+                            clicked = true;
+                            setState(() {});
+                          } else {
+                            await HiveController.getWishlist().delete(logic.productModel?.id);
+                            setState(() {});
+                          }
+                        },
+                        child: !clicked
+                            ? Icon(
+                                Icons.favorite,
+                                size: 20.sp,
+                                color:
+                                    HiveController.getWishlist().get(logic.productModel?.id) == null
+                                        ? Colors.grey.shade400
+                                        : moveColor,
+                              )
+                            : Lottie.asset('assets/images/lf30_editor_omnqgnhv.json',
+                                onLoaded: (LottieComposition l) {
+                                Future.delayed(
+                                        Duration(milliseconds: l.duration.inMilliseconds - 1500))
+                                    .then((value) {
+                                  clicked = false;
+                                  setState(() {});
+                                });
+                              }, repeat: false, animate: true),
+                      )),
+                PositionedDirectional(
+                    bottom: 5,
+                    start: 0,
+                    end: 0,
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: buildPageIndicator(),
+                      ),
+                    ))
+              ],
+            ),
+          );
+        });
+  }
+}

@@ -1,0 +1,53 @@
+import 'dart:developer';
+
+import '../../entities/home_screen_model.dart';
+import '../custom_widget/custom_text.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class ItemTestimonial extends StatelessWidget {
+  final Items? item;
+  const ItemTestimonial({Key? key,this.item}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 300.w,
+          margin: const EdgeInsetsDirectional.only(start: 15),
+          padding: EdgeInsets.all(15.sp),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius:
+              BorderRadius.circular(20.sp)),
+          child: SizedBox(
+            height: (item?.text?.length ?? 0 ) > 299 ? 250.h : null,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                crossAxisAlignment:
+                CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    item?.author,
+                    fontSize: 11,
+                    maxLines: 1,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  const SizedBox(height: 5,),
+                  CustomText(
+                    item?.text?.replaceAll('\n', '').replaceAll('\t', '').replaceAll('\r', ''),
+                    textAlign: TextAlign.start,
+                    fontSize: 10,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+        // const Spacer(),
+      ],
+    );
+  }
+}

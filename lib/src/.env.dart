@@ -1,0 +1,28 @@
+import '../main.dart';
+
+
+//appName need to change in 3 places
+const appName = 'HAWRAA';
+//the following just need to change in this file
+const storeId = '39447';
+const AUTHORIZATION_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzMzYiLCJqdGkiOiIwNjc2NDc0ZjljZjg4MmU2YjA0MDY0OGNiODBlOGQyMzJlYzVhZTViZDIyZTJjZjJjZThlYzQ3YzI1ZDAwNjg2YWE4MDAzYzA4YTFjODgxMiIsImlhdCI6MTY1MTE1MjEzMS43NDEwMTUsIm5iZiI6MTY1MTE1MjEzMS43NDEwMTgsImV4cCI6MTY4MjY4ODEzMS43MDI1MDYsInN1YiI6IjQyNDA4Iiwic2NvcGVzIjpbInRoaXJkX2FjY291bnRfcmVhZCIsInRoaXJkX3ZhdF9yZWFkIiwidGhpcmRfY2F0ZWdvcmllc19yZWFkIiwidGhpcmRfY3VzdG9tZXJzX3JlYWQiLCJ0aGlyZF9vcmRlcl9yZWFkIiwidGhpcmRfY291cG9uc193cml0ZSIsInRoaXJkX2RlbGl2ZXJ5X29wdGlvbnNfcmVhZCIsInRoaXJkX2FiYW5kb25lZF9jYXJ0c19yZWFkIiwidGhpcmRfcGF5bWVudF9yZWFkIiwidGhpcmRfd2ViaG9va19yZWFkIiwidGhpcmRfcHJvZHVjdF9yZWFkIiwidGhpcmRfY291bnRyaWVzX3JlYWQiLCJ0aGlyZF9jYXRhbG9nX3dyaXRlIiwidGhpcmRfc3Vic2NyaXB0aW9uX3JlYWQiLCJ0aGlyZF9pbnZlbnRvcnlfcmVhZCJdfQ.RJQBbKQyCh77kRYi1kBuMpY8UYB6L9ARCOsSAkgKsa0ZY4DRHjzQNSrs38pfMzFtqfpDEipWikb5iFj6uAK_fqwDGgCk3P-0k-Dsp0ycL2RarYp5PBX75QbGXeYcqIXbh--RsBRQH3J1IMGCnlXjhijOoIi4kkqKkzeMHyXVLkRmXy-Y8mZOg7qZQ-wtiq2XG1azka_qr3Pm0gb1OZcU0thwU8dArDIM5XLqWWKvA51i0qzEUyaIXnoz_X51G-53GORzFcOsScAv4WMIg7kTyk_IFJlA8-1Yf6mLCwkYT0HbcyWd1A7AxTZ4CaC33ZYy6EIhTWSLmJ_88I2hdMAkFyHkIYLNMC2fPErHjc2r1rqnBhC08RGcCJLEzGJsRD2ONlw4ctqhzNKaSJw_WtLcUUJMPztQYj1vyugRnwgIsqtqJ0s8YWc13SqKA9UDh21R4dZuAgMnqTVsCXU6nrA2hZX1Uj2sNg-Qr5lBhZe6Gl0je0nbxOJ2K_KZS9Ii_kF3YK24pmBX8F1oVXv3ugc7zcxzCr6quIMiDCoH5b5NxiFFmuGz9TQrg5g0bYXmF8TWjyzqLalt2onpDyh4RAcit4-Syq9d9xBFgz1KxoTb2ymGV1UrqEisPqtakUnD7yAEIC-dgbyjKPG9WM8XuO-H-maYhvsix9Hxv2_SHcSsNBA";
+const ACCESS_TOKEN = 'eyJpdiI6IkJrQnFkczYzWEt0Q3M3T0tvOXRzT1E9PSIsInZhbHVlIjoiYjJZbjVFVHNFQjc2alVFK3c2TmlySHlGYmw0cjduUUlTK3Rid2NqRTVGOStNdnIwV0FhY0FzanYzY1drVlFWS2plZDlyWlY5RjdwYXVCU0tGY2hDeUp2MDFFRVQ2aHlIWWk0WFd6ZmQyN2VXUndNKzJkT2prUno4aDJ1QS8rUGdjWm43MzhiWG0zeSt0NDBJOXAya0xvYVFGcTdBNEQ3U01wRWhLRUNQN21MRStMWE9Jd0R3aTRKTHNFeHpFMWxFYm9kT2Jpd1dBREk3S0dDU044ZTN1Y1RpZyt2V1ViTXMwQVhtaGJ2dStKOD0iLCJtYWMiOiJmODAwNTJhMmEzYmFjM2ExNzQwNjlmMzczM2JjYzUwNjFhZGUyZDZjMjk0MmE3ZDNkZDNhZDE4NGExNTIwOWIxIiwidGFnIjoiIn0=';
+const OneSignalAppId = 'd07dea5e-7045-4b15-9f18-8e2296376957';
+const storeUrl   = 'https://hawraaabaya.com';
+const appsBunchesUrl = 'https://bit.ly/3y5ddiV';
+// Share App link in stores
+const shareLink = 'https://hawraaabaya.page.link/rniX';
+
+
+//static strings
+const currency = 'SAR';
+const baseUrl    = 'https://api.zid.sa/v2/';
+const baseUrlV1  = 'https://api.zid.sa/v1/';
+const catalogUrl = 'https://api.zid.sa/';
+const accept = 'application/json';
+const SECRET_ENCRYPT_KEY = '479cb4c8f5ac23e51fd3e1dee0ac14c6';
+const softThemeId = 'f9f0914d-3c58-493b-bd83-260ed3cb4e82';
+const eshraqThemeId = '8ba6ae26-32ea-4271-81b2-0d9d6804a473';
+
+
+

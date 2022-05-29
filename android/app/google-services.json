@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "24449073717",
+    "project_id": "hawraaabaya-7339f",
+    "storage_bucket": "hawraaabaya-7339f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24449073717:android:92cc64f1b3f98aaf63e77c",
+        "android_client_info": {
+          "package_name": "com.appsbunches.hawraaabaya1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24449073717-1jbs6r45off01qj6g6sqkn6cd2e3smmj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeoRTTnWkgnKKuaj7lCDXMAw9ic7E38HM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24449073717-1jbs6r45off01qj6g6sqkn6cd2e3smmj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
