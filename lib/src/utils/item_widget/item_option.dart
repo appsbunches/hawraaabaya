@@ -1,6 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import '../../entities/product_details_model.dart';
-import '../../moudules/product_details/logic.dart';
+import '../../modules/product_details/logic.dart';
 import '../custom_widget/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

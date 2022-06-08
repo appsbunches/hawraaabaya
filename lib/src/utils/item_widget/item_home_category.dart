@@ -1,6 +1,6 @@
 import '../../colors.dart';
 import '../../entities/category_model.dart';
-import '../../moudules/category_details/view.dart';
+import '../../modules/category_details/view.dart';
 import '../custom_widget/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

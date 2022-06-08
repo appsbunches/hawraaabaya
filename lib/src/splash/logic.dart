@@ -4,16 +4,16 @@ import 'package:dio/dio.dart';
 import '../app_config.dart';
 import '../data/remote/api_requests.dart';
 import '../data/shared_preferences/pref_manger.dart';
-import '../moudules/_main/logic.dart';
-import '../moudules/_main/view.dart';
-import '../moudules/select_language/view.dart';
+import '../modules/_main/logic.dart';
+import '../modules/_main/view.dart';
+import '../modules/select_language/view.dart';
 import '../utils/error_handler/error_handler.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
 
 import '../../../main.dart';
 import '../binding.dart';
-import '../moudules/unauthenticated/view.dart';
+import '../modules/unauthenticated/view.dart';
 
 class SplashLogic extends GetxController {
   final PrefManger _prefManger = Get.find();

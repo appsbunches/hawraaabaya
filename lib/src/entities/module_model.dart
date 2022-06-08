@@ -1,4 +1,3 @@
-import '../.env.dart';
 import 'category_model.dart';
 import '../app_config.dart';
 import 'home_screen_model.dart';
@@ -30,16 +29,17 @@ class ModuleModel {
 }
 
 class Settings {
-  List<Links1Links>? links1Links;
-  List<Links2Links>? links2Links;
+  List<Links>? links1Links;
+  List<Links>? links2Links;
   bool? links1Hide;
   bool? links2Hide;
   List<Items>? slider;
+  List<Items>? instagram;
   bool? displayMore;
   bool? hideDots;
   bool? announcementBarDisplay;
-  String? links_1_title;
-  String? links_2_title;
+  String? links1Title;
+  String? links2Title;
   String? textColor;
   String? announcementBarText;
   String? announcementBarPageDisplay;
@@ -55,10 +55,10 @@ class Settings {
   String? colorsFooterTextColor;
   String? fontsName;
   String? title;
-  List<Gallery>? gallery;
-  List<Gallery>? storePartners;
+  List<Items>? gallery;
+  List<Items>? storePartners;
   List<StoreFeatures>? storeFeatures;
-    List<StoreFeatures>? features;
+  List<StoreFeatures>? features;
   int? order;
   FeaturedProducts? category;
   FeaturedProducts? products;
@@ -66,59 +66,48 @@ class Settings {
   List<CategoryModel>? categories;
   String? video;
   String? bgColor;
+  String? instagramAccount;
   bool? autoplay;
   bool? controls;
+  bool? showButton;
+  bool? textPositionRight;
+  String? subtitle;
+  String? image;
+  String? mobileImage;
+  String? buttonText;
+  String? buttonBgColor;
+  String? buttonTextColor;
+  String? backgroundColor;
+  String? url;
 
   Settings.fromJson(dynamic json) {
-    bgColor = json['bg_color'];
+    backgroundColor = json['background_color'];
+    textPositionRight = json['text_position_right'];
+    url = json['url'];
+    buttonTextColor = json['button_text_color'];
+    buttonBgColor = json['button_bg_color'];
+    buttonText = json['button_text'];
+    buttonText = json['button_text'];
+    showButton = json['show_button'];
+    mobileImage = json['mobile_image'] ?? json['image_mobile'] ;
+    subtitle = json['subtitle'];
+    instagramAccount = json['instagram_account'];
     textColor = json['text_color'];
+    bgColor = json['bg_color'];
     video = json['video'];
     autoplay = json['autoplay'];
     controls = json['controls'];
-    if (json['categories'] != null) {
-      categories = [];
-      json['categories'].forEach((v) {
-        categories?.add(CategoryModel.fromJson(v['category']));
-      });
-    }
-    if (json['links_1_links'] != null) {
-      links1Links = [];
-      json['links_1_links'].forEach((v) {
-        if(v==null)return;
-        var element = Links2Links.fromJson(v);
-        if (element.title != null) {
-          links1Links?.add(Links1Links.fromJson(v));
-        }
-      });
-    }
-    if (json['links_2_links'] != null) {
-      links2Links = [];
-      json['links_2_links'].forEach((v) {
-        if(v==null)return;
-        var element = Links2Links.fromJson(v);
-        if (element.title != null) {
-          links2Links?.add(Links2Links.fromJson(v));
-        }
-      });
-    }
-    links_1_title = json['links_1_title'];
-    links_2_title = json['links_2_title'];
-
     moreText = json['more_text'];
-    try{
-      if((moreText?.length ?? 0)> 11){
-        moreText = moreText?.substring(0,10);
+    try {
+      if ((moreText?.length ?? 0) > 11) {
+        moreText = moreText?.substring(0, 10);
         moreText = '$moreText...';
       }
-    }catch(e){}
+    } catch (e) {}
+    links1Title = json['links_1_title'];
+    links2Title = json['links_2_title'];
     links1Hide = json['links_1_hide'];
     links2Hide = json['links_2_hide'];
-    if (json['slider'] != null) {
-      slider = [];
-      json['slider'].forEach((v) {
-        slider?.add(Items.fromJson(v));
-      });
-    }
     hideDots = json['hide_dots'];
     announcementBarDisplay = json['announcement_bar_display'];
     announcementBarText = json['announcement_bar_text'];
@@ -127,12 +116,6 @@ class Settings {
     announcementBarTextColor = json['announcement_bar_text_color'];
     announcementBarUrl = json['announcement_bar_url'];
     headerLogo = json['header_logo'];
-    if (json['header_options'] != null) {
-      headerOptions = [];
-      json['header_options'].forEach((v) {
-        headerOptions?.add((v));
-      });
-    }
     colorsHeaderBackgroundColor = json['colors_header_background_color'];
     colorsHeaderTextColor = json['colors_header_text_color'];
     colorsFooterBackgroundColor = json[AppConfig.isSoreUseNewTheme
@@ -140,85 +123,113 @@ class Settings {
         : 'colors_footer_background_color'];
     colorsFooterTextColor = json['colors_footer_text_color'];
     fontsName = json['fonts_name'];
-    if (json['gallery'] != null) {
-      gallery = [];
-      json['gallery'].forEach((v) {
-        gallery?.add(Gallery.fromJson(v));
-      });
-    }
-    if (json['store_partners'] != null) {
-      storePartners = [];
-      json['store_partners'].forEach((v) {
-        storePartners?.add(Gallery.fromJson(v));
-      });
-    }
     order = json['order'];
     displayMore = json['display_more'];
     title = json['title'];
     category = json['category'] == null ? null : FeaturedProducts.fromJson(json['category']);
     products = json['products'] == null ? null : FeaturedProducts.fromJson(json['products']);
+
+   if (json['categories'] != null) {
+      categories = [];
+      json['categories'].forEach((v) {
+        if(v == null) return;
+        categories?.add(CategoryModel.fromJson(v['category'] ?? v));
+      });
+    }
+    if (json['links_1_links'] != null) {
+      links1Links = [];
+      json['links_1_links'].forEach((v) {
+        if (v == null) return;
+        var element = Links.fromJson(v);
+        if (element.title != null) {
+          links1Links?.add(Links.fromJson(v));
+        }
+      });
+    }
+    if (json['links_2_links'] != null) {
+      links2Links = [];
+      json['links_2_links'].forEach((v) {
+        if (v == null) return;
+        var element = Links.fromJson(v);
+        if (element.title != null) {
+          links2Links?.add(Links.fromJson(v));
+        }
+      });
+    }
+    if (json['slider'] != null) {
+      slider = [];
+      json['slider'].forEach((v) {
+        if (v == null) return;
+        slider?.add(Items.fromJson(v));
+      });
+    }
+    if (json['instagram'] != null) {
+      instagram = [];
+      json['instagram'].forEach((v) {
+        if (v == null) return;
+        instagram?.add(Items.fromJson(v));
+      });
+    }
+    if (json['header_options'] != null) {
+      headerOptions = [];
+      json['header_options'].forEach((v) {
+        if(v == null) return;
+        headerOptions?.add((v));
+      });
+    }
+    if (json['gallery'] != null) {
+      gallery = [];
+      json['gallery'].forEach((v) {
+        if(v == null) return;
+        gallery?.add(Items.fromJson(v));
+      });
+    }
+    if (json['store_partners'] != null) {
+      storePartners = [];
+      json['store_partners'].forEach((v) {
+        if(v == null) return;
+        storePartners?.add(Items.fromJson(v));
+      });
+    }
     if (json['testimonials'] != null) {
       testimonials = [];
       json['testimonials'].forEach((v) {
+        if(v == null) return;
         testimonials?.add(Items.fromJson(v));
       });
     }
     if (json['store_features'] != null) {
       storeFeatures = [];
       json['store_features'].forEach((v) {
+        if(v == null) return;
         storeFeatures?.add(StoreFeatures.fromJson(v));
       });
-    } if (json['features'] != null) {
+    }
+    if (json['features'] != null) {
       features = [];
       json['features'].forEach((v) {
+        if(v == null) return;
         features?.add(StoreFeatures.fromJson(v));
       });
     }
   }
 }
 
-class Gallery {
-  Gallery.fromJson(dynamic json) {
-    image = json['image'];
-    url = json['url'];
-  }
-
-  String? image;
-  String? url;
-}
-
-class Slider {
-  Slider.fromJson(dynamic json) {
-    image = json['image'];
-  }
-
-  String? image;
-}
 
 class StoreFeatures {
   StoreFeatures.fromJson(dynamic json) {
     image = json['image'];
-    title = json[AppConfig.currantThemeId==eshraqThemeId ?'text':'title'];
-    text_color = json['text_color'];
+    title = json['title'] ?? json['text'];
+    textColor = json['text_color'];
   }
 
   String? image;
   String? title;
-  String? text_color;
+  String? textColor;
 }
 
-class Links2Links {
-  Links2Links.fromJson(dynamic json) {
-    title = json['title'];
-    url = json['url'];
-  }
-
-  String? title;
-  String? url;
-}
-
-class Links1Links {
-  Links1Links.fromJson(dynamic json) {
+class Links {
+  Links.fromJson(dynamic json) {
     title = json['title'];
     url = json['url'];
   }

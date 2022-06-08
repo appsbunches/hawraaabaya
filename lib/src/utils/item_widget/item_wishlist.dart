@@ -11,7 +11,7 @@ import '../../colors.dart';
 import '../../data/hive/wishlist/hive_controller.dart';
 import '../../data/hive/wishlist/wishlist_model.dart';
 import '../../images.dart';
-import '../../moudules/_main/tabs/cart/logic.dart';
+import '../../modules/_main/tabs/cart/logic.dart';
 import '../../services/app_events.dart';
 import '../functions.dart';
 
@@ -231,8 +231,7 @@ class _ItemWishlistState extends State<ItemWishlist> {
                                         await cartLogic.addToCart(widget.product?.productId,
                                             quantity: 1.toString(),
                                             hasOptions: widget.product?.productHasOptions ?? false,
-                                            hasFields: widget.product?.productHasFields ?? false,
-                                            index: widget.index);
+                                            hasFields: widget.product?.productHasFields ?? false);
 
                                         isLoading = false;
                                         _appEvents.logAddToCart(

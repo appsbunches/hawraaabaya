@@ -38,7 +38,7 @@ class CategoryModel {
 
   CategoryModel.fromJson(dynamic json) {
     id = json['id'].toString();
-    name = getLabelInString(json['name']);
+    name = getLabelInString(json['name']) ?? getLabelInString(json['title']);
     //description = getLabelInString(json['description']);
     slug = json['slug'];
     sEOCategoryTitle = json['SEO_category_title'];

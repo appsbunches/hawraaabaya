@@ -39,11 +39,11 @@ class ApiRequests extends ge.GetxController {
         try {
           await remoteConfig.fetchAndActivate();
         } catch (e) {}
-        accessToken = remoteConfig.getString('ACCESS_TOKEN');
+        accessToken = remoteConfig.getString(ACCESS_TOKEN_KEY);
         await _prefManger.setAccessToken(accessToken);
       }
       if (authorizationToken == '') {
-        authorizationToken = remoteConfig.getString('AUTHORIZATION_TOKEN');
+        authorizationToken = remoteConfig.getString(AUTHORIZATION_TOKEN_KEY);
         await _prefManger.setAuthorizationToken(authorizationToken);
       }
 
@@ -135,6 +135,10 @@ class ApiRequests extends ge.GetxController {
     return await _dioV2.get("catalog/stores/$storeId/terms-conditions");
   }
 
+  Future<Response> getLicense() async {
+    return await _dioV2.get("catalog/stores/$storeId/license");
+  }
+
   ///---------------------- Catalog -- Pages ----------------------///
   Future<Response> getPages() async {
     return await _dioV2.get("catalog/stores/$storeId/pages");
@@ -208,6 +212,10 @@ class ApiRequests extends ge.GetxController {
           'email': email,
           '_method': 'put',
         }));
+  }
+
+  Future<Response> deleteAccount() async {
+    return await _dioV2.delete("catalog/customers/profile",);
   }
 
   /// Orders
@@ -346,11 +354,11 @@ class ApiRequests extends ge.GetxController {
         try {
           await remoteConfig.fetchAndActivate();
         } catch (e) {}
-        accessToken = remoteConfig.getString('ACCESS_TOKEN');
+        accessToken = remoteConfig.getString(ACCESS_TOKEN_KEY);
         await _prefManger.setAccessToken(accessToken);
       }
       if (authorizationToken == '') {
-        authorizationToken = remoteConfig.getString('AUTHORIZATION_TOKEN');
+        authorizationToken = remoteConfig.getString(AUTHORIZATION_TOKEN_KEY);
         await _prefManger.setAuthorizationToken(authorizationToken);
       }
 

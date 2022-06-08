@@ -12,6 +12,8 @@ class AppConfig {
 
   static const bool showOnBoarding = false;
 
+  static const bool showTextAsBold = false;
+
   static const bool showSubCategoriesAsGrid = false;
 
   static const bool showOneSlider = false;
@@ -21,7 +23,8 @@ class AppConfig {
   static const bool enhancementsV1 = true;
 
   static const String fontName = 'AvenirArabic';
-  static String? currantThemeId;
+
+  static String? currentThemeId;
 
   static const double fontDecIncValue = 2;
 
@@ -30,15 +33,24 @@ class AppConfig {
   //Account Page
   static const bool showAppsBunchesLogo = true;
 
-  static const bool showWhatsAppIconInProductPage = true;
+  static  bool showWhatsAppIconInProductPage = true;
 
   static const bool showShippingTo = true;
 
   static const bool showCall = true;
 
-  static const bool showWhatsApp = true;
+  static  bool showWhatsApp = true;
 
   static const bool showEmail = true;
+
+  static const double? featureSize = null;
+  
+  static const bool isDeleteAccountEnable = true;
+
+  //New
+  static const double paddingBetweenWidget = 5;
+
+  static const double sliderAspectRatio = 2.33;
 
 
 }

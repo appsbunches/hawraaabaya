@@ -134,7 +134,7 @@ class Featured_categories {
 class On_sale_products {
   bool? display;
   String? title;
-  More_button? moreButton;
+  MoreButton? moreButton;
   List<Items>? items;
 
   On_sale_products({this.display, this.title, this.moreButton, this.items});
@@ -143,7 +143,7 @@ class On_sale_products {
     display = json['display'];
     title = json['title'];
     moreButton = json['more_button'] != null
-        ? More_button.fromJson(json['more_button'])
+        ? MoreButton.fromJson(json['more_button'])
         : null;
     if (json['items'] != null) {
       items = [];
@@ -160,6 +160,8 @@ class Items {
   String? image;
   String? type;
   String? title;
+  String? subtitle;
+  String? btnText;
   String? des;
   String? text;
   String? link;
@@ -167,6 +169,7 @@ class Items {
   dynamic? parentId;
   String? name;
   String? author;
+  String? date;
   String? slug;
   double? price;
   double? salePrice;
@@ -194,9 +197,20 @@ class Items {
   dynamic? soldProductsCount;
   String? createdAt;
   String? updatedAt;
+  String? mobileImage;
+  String? textColor;
+  String? buttonColor;
+  String? buttonText;
 
   Items.fromJson(dynamic json) {
     id = json['id'].toString();
+    btnText = json['btn_text'];
+    date = json['date'];
+    buttonColor = json['button_color'];
+    buttonText = json['button_text'];
+    textColor = json['text_color'];
+    subtitle = json['subtitle'];
+    mobileImage = json['mobile_image'] ?? json['image_mobile'] ;
     des = json['des'];
     type = json['type'];
     sku = json['sku'];
@@ -314,13 +328,13 @@ class Categories {
   }
 }
 
-class More_button {
+class MoreButton {
   String? text;
   String? url;
 
-  More_button({this.text, this.url});
+  MoreButton({this.text, this.url});
 
-  More_button.fromJson(dynamic json) {
+  MoreButton.fromJson(dynamic json) {
     text = json['text'];
     url = json['url'];
   }
@@ -331,16 +345,18 @@ class FeaturedProducts {
   String? url;
   String? title;
   String? id;
-  More_button? moreButton;
+  String? moduleType;
+  MoreButton? moreButton;
   List<ProductDetailsModel>? items;
 
   FeaturedProducts.fromJson(dynamic json) {
     display = json['display'];
+    moduleType = json['module_type'];
     url = json['url'];
     id = json['id'].toString();
     title = AppConfig.isSoreUseNewTheme ? json['name'] : json['title'];
     moreButton = json['more_button'] != null
-        ? More_button.fromJson(json['more_button'])
+        ? MoreButton.fromJson(json['more_button'])
         : null;
     if (json[AppConfig.isSoreUseNewTheme ? 'products' : 'items'] != null) {
       items = [];

@@ -42,7 +42,7 @@ class CustomImage extends StatelessWidget {
           fit: fit ?? BoxFit.contain,
           placeholderBuilder: (BuildContext context) => showErrorImage
               ? Image.asset(
-                  iconLogo,
+                  iconLogoFull,
                   width: size.sp,
                   height: size.sp,
                 )
@@ -67,7 +67,7 @@ class CustomImage extends StatelessWidget {
         padding: EdgeInsets.all(size / 2),
         child: showErrorImage
             ? Image.asset(
-                iconLogo,
+                iconLogoFull,
                 width: size.sp,
                 height: size.sp,
               )

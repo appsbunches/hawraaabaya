@@ -1,14 +1,14 @@
-import 'package:entaj/src/moudules/_main/logic.dart';
+import 'package:entaj/src/modules/_main/logic.dart';
 import 'package:entaj/src/services/app_events.dart';
 import 'package:get/get.dart';
 
 import 'data/hive/wishlist/hive_controller.dart';
 import 'data/remote/api_requests.dart';
 import 'data/shared_preferences/pref_manger.dart';
-import 'moudules/_main/tabs/home/logic.dart';
-import 'moudules/delivery_option/logic.dart';
-import 'moudules/_main/tabs/cart/logic.dart';
-import 'moudules/pages/logic.dart';
+import 'modules/_main/tabs/home/logic.dart';
+import 'modules/delivery_option/logic.dart';
+import 'modules/_main/tabs/cart/logic.dart';
+import 'modules/pages/logic.dart';
 
 class Binding extends Bindings {
   @override

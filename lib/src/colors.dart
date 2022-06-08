@@ -59,12 +59,14 @@ const addToCartColor =
     !AppConfig.showButtonWithBorder ? primaryColor : Colors.white;
 const textAddToCartColor =
     AppConfig.showButtonWithBorder ? primaryColor : Colors.white;
-
+/// Home - Features
+const featuresBackgroundColor = primaryColor;
+const featuresForegroundColor = Colors.white;
 /// Icons
 const socialMediaIconColor = primaryColor;
 
 // const primaryColor = Color.fromRGBO(123, 63, 85, 1.0);
-const primaryColor = Color(0xff9A474F);
+const primaryColor = Color(0XFF9A474F);
 const secondaryColor = Color.fromRGBO(132, 78, 53, 1.0);
 const errorBackgroundColor = Color(0xFF616161);
 

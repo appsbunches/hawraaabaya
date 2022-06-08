@@ -1,6 +1,6 @@
 import '../../entities/order_model.dart';
-import '../../moudules/order_details/view.dart';
-import '../../moudules/upload_transfer/view.dart';
+import '../../modules/order_details/view.dart';
+import '../../modules/upload_transfer/view.dart';
 import '../custom_widget/custom_button_widget.dart';
 import '../custom_widget/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../colors.dart';
-import '../../moudules/_main/tabs/orders/logic.dart';
+import '../../modules/_main/tabs/orders/logic.dart';
 
 class ItemOrder extends StatelessWidget {
   final int index;

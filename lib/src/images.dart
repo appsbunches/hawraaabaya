@@ -26,6 +26,8 @@ const iconLocation ='assets/images/icon_location.png';
 ///
 const iconLogo ='assets/images/icon.png';
 const iconLogoText ='assets/images/icon.png';
+const iconLogoFull ='assets/images/icon.png';
+
 ///
 const iconLogout ='assets/images/icon_logout.png';
 const iconMail ='assets/images/icon_mail.png';

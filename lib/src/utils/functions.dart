@@ -1,11 +1,14 @@
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:entaj/src/modules/delivery_option/view.dart';
+import 'package:entaj/src/modules/faq/view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../modules/page_details/view.dart';
+import '../modules/search/view.dart';
 import '/main.dart';
 import '/src/entities/product_details_model.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -28,11 +31,33 @@ String? getLabelInString(dynamic value) {
 
 goToLink(String? link) async {
   log(link.toString());
-  if (link == null || link =='') return;
+  if (link == null || link == '') return;
+  if (link.contains('/faqs')) {
+    Get.to(const FaqPage());
+    return;
+  }
+  if (link.contains('/shipping-and-payment')) {
+    Get.to(DeliveryOptionPage());
+    return;
+  }
+    if (link.contains('/blogs/') || link.contains('/pages/')) {
+    Get.to(PageDetailsPage(
+      type: 5,
+      title: null,
+      url: link,
+    ));
+    return;
+  }
+  if (link.contains('search')) {
+    int indexOfSearch = link.indexOf('search');
+    var searchQ = link.substring(indexOfSearch + 7);
+    Get.to(SearchPage(searchQ: Uri.decodeFull(searchQ)));
+    return;
+  }
   if (link.contains('categories')) {
     try {
-      var categoryId = link.substring(
-          link.indexOf('categories') + 11, link.indexOf('categories') + 17);
+      var categoryId =
+          link.substring(link.indexOf('categories') + 11, link.indexOf('categories') + 17);
       log(categoryId.toString());
       Get.toNamed("/category-details/$categoryId");
       return;
@@ -43,47 +68,30 @@ goToLink(String? link) async {
     try {
       var productId = link.substring(link.indexOf('products') + 9, link.length);
       var url = Uri.encodeComponent(productId);
-      Get.toNamed("/product-details/$url", arguments: {'backCount' : '1'});
+      Get.toNamed("/product-details/$url", arguments: {'backCount': '1'});
       return;
     } catch (e) {
       return;
     }
   }
-  var url = Uri.parse(link).toString();
-  if (await canLaunch(url)) {
-    await launch(url);
+  var url = Uri.parse(link);
+  if (await canLaunchUrl(url)) {
+    await launchUrl(url);
   } else {
     log("can't launch $url");
-    if (link.contains('categories')) {
-      try {
-        var categoryId = link.substring(
-            link.indexOf('categories') + 11, link.indexOf('categories') + 17);
-        log(categoryId.toString());
-        Get.toNamed("/category-details/$categoryId");
-      } catch (e) {}
-    } else if (link.contains('products')) {
-      try {
-        String productId = link.substring(10, link.length);
-        var url = Uri.encodeComponent(productId);
-        Get.toNamed("/product-details/$url", arguments: {'backCount' : '1'});
-      } catch (e) {}
-    }
   }
 }
 
 Future<bool> checkInternet() async {
   final ConnectivityResult result = await Connectivity().checkConnectivity();
   if (result == ConnectivityResult.none) {
-    Fluttertoast.showToast(
-        msg: 'يرجى التأكد من اتصالك بالإنترنت'.tr,
-        toastLength: Toast.LENGTH_SHORT);
+    showMessage('يرجى التأكد من اتصالك بالإنترنت'.tr, 2);
     return false;
   }
   return true;
 }
 
-String calculateDiscount(
-    {required double salePriceTotal, required double priceTotal}) {
+String calculateDiscount({required double salePriceTotal, required double priceTotal}) {
   return /*'خصم '.tr +*/
       '${((1 - (salePriceTotal / priceTotal)) * 100).ceil().toString()}%-';
 }
@@ -102,37 +110,41 @@ extension E on String {
   String lastChars(int n) => substring(length - n);
 }
 
-int getMaxLength(String selectedCode){
+int getMaxLength(String selectedCode) {
   var num = 9;
-  if(selectedCode.contains('966')) num = 9;
-  if(selectedCode.contains('971')) num = 9;
-  if(selectedCode.contains('965')) num = 8;
-  if(selectedCode.contains('968')) num = 8;
-  if(selectedCode.contains('973')) num = 8;
-  if(selectedCode.contains('974')) num = 8;
+  if (selectedCode.contains('966')) num = 9;
+  if (selectedCode.contains('971')) num = 9;
+  if (selectedCode.contains('965')) num = 8;
+  if (selectedCode.contains('968')) num = 8;
+  if (selectedCode.contains('973')) num = 8;
+  if (selectedCode.contains('974')) num = 8;
 
   return num;
 }
 
-showMessage(String? text ,int type){
-  Get.snackbar('', "",
-      titleText: const SizedBox(),
-      messageText: Row(
-        children: [
-          Expanded(
-              child: CustomText(
-                text,
-                fontSize: 12,
-                color:type == 1 ? Colors.white : Colors.black,
-              )),
-          Icon(
-            type == 1 ? Icons.check_circle :Icons.error,
-            color: type == 1 ? Colors.white : Colors.black,
-          )
-        ],
-      ),
-      snackStyle: SnackStyle.GROUNDED,
-      margin: EdgeInsets.zero,
-      backgroundColor: type == 1 ? Colors.green : Colors.yellow.shade700,
-      );
+showMessage(String? text, int type) {
+  if ((text?.length ?? 0) == 0) return;
+  Get.snackbar(
+    '',
+    "",
+    titleText: const SizedBox(),
+    messageText: Row(
+      children: [
+        Expanded(
+            child: CustomText(
+          text,
+          fontSize: 12,
+          color: type == 1 ? Colors.white : Colors.black,
+        )),
+        Icon(
+          type == 1 ? Icons.check_circle : Icons.error,
+          color: type == 1 ? Colors.white : Colors.black,
+        )
+      ],
+    ),
+    snackStyle: SnackStyle.GROUNDED,
+    margin: EdgeInsets.zero,
+    backgroundColor: type == 1 ? Colors.green : Colors.yellow.shade700,
+  );
 }
+

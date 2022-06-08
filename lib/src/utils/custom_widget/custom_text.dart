@@ -32,14 +32,14 @@ class CustomText extends StatelessWidget {
   Widget build(BuildContext context) {
     double fs = ((fontSize == null ? 12 : fontSize!) + AppConfig.fontDecIncValue);
     return Text(
-      text ?? '',
+      text?.replaceAll('ً', '') ?? '',
       textAlign: textAlign,
       style: TextStyle(
           decoration: lineThrough != null ? TextDecoration.lineThrough : null,
           color: color,
           fontSize: fs.sp,
           overflow: overflow,
-          fontWeight: fontWeight,
+          fontWeight: AppConfig.showTextAsBold ? FontWeight.bold : fontWeight,
           height: height),
       maxLines: maxLines,
     );

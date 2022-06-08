@@ -5,8 +5,8 @@ import 'package:lottie/lottie.dart';
 import '../../../main.dart';
 import '../../data/shared_preferences/pref_manger.dart';
 import '../../entities/product_details_model.dart';
-import '../../moudules/_auth/login/view.dart';
-import '../../moudules/wishlist/logic.dart';
+import '../../modules/_auth/login/view.dart';
+import '../../modules/wishlist/logic.dart';
 import '../custom_widget/custom_image.dart';
 import '../custom_widget/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -18,19 +18,18 @@ import '../../colors.dart';
 import '../../data/hive/wishlist/hive_controller.dart';
 import '../../data/hive/wishlist/wishlist_model.dart';
 import '../../images.dart';
-import '../../moudules/_main/tabs/cart/logic.dart';
+import '../../modules/_main/tabs/cart/logic.dart';
 import '../../services/app_events.dart';
 import '../functions.dart';
 
 class ItemProduct extends StatefulWidget {
   final ProductDetailsModel? product;
   final int backCount;
-  final int index;
   final bool forWishlist;
   final bool horizontal;
   final double width;
 
-  const ItemProduct(this.product, this.index,
+  const ItemProduct(this.product,
       {Key? key,
         this.forWishlist = false,
         this.width = 140,
@@ -109,6 +108,25 @@ class _ItemProductState extends State<ItemProduct> {
                                 ),
                               ),
                             ),
+                            if (widget.product!.offerLabel != null)
+                              PositionedDirectional(
+                                start: 0,
+                                child: Container(
+                                  width: widget.product!.offerLabel!.length > 30 ? 150.w : null,
+                                  margin: const EdgeInsets.only(top: 10, left: 3, right: 3),
+                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                  decoration: BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(15.sp)),
+                                  child: CustomText(
+                                    widget.product?.offerLabel,
+                                    overflow: TextOverflow.ellipsis,
+                                    color: Colors.white,
+                                    textAlign: TextAlign.center,
+                                    fontSize: 8,
+                                  ),
+                                ),
+                              ),
                           ],
                         )),
                   ),
@@ -204,8 +222,7 @@ class _ItemProductState extends State<ItemProduct> {
                                     await cartLogic.addToCart(widget.product?.id,
                                         quantity: quantity.toString(),
                                         hasOptions: widget.product?.hasOptions ?? false,
-                                        hasFields: widget.product?.hasFields ?? false,
-                                        index: widget.index);
+                                        hasFields: widget.product?.hasFields ?? false);
 
                                     isLoading = false;
                                     _appEvents.logAddToCart(widget.product?.name,

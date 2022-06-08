@@ -35,6 +35,12 @@ class ItemTestimonial extends StatelessWidget {
                     maxLines: 1,
                     fontWeight: FontWeight.bold,
                   ),
+                   CustomText(
+                    item?.date,
+                    fontSize: 8,
+                    color: Colors.grey.shade800,
+                    maxLines: 1,
+                  ),
                   const SizedBox(height: 5,),
                   CustomText(
                     item?.text?.replaceAll('\n', '').replaceAll('\t', '').replaceAll('\r', ''),

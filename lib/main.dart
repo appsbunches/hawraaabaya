@@ -20,8 +20,8 @@ import 'src/localization/translations.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 //import 'package:oktoast/oktoast.dart';
 
-import 'src/moudules/category_details/view.dart';
-import 'src/moudules/product_details/view.dart';
+import 'src/modules/category_details/view.dart';
+import 'src/modules/product_details/view.dart';
 import 'src/splash/view.dart';
 import 'src/utils/dismiss_keyboard.dart';
 
@@ -36,6 +36,18 @@ void main() async {
 
   remoteConfig = FirebaseRemoteConfig.instance;
 
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(minutes: 1),
+    minimumFetchInterval: const Duration(minutes: 1),
+  ));
+  await remoteConfig.ensureInitialized();
+  try {
+    await remoteConfig.fetchAndActivate();
+  } catch (e) {}
+
+  AppConfig.showWhatsAppIconInProductPage = remoteConfig.getString(WA_PRODUCT_KEY).isNotEmpty;
+  AppConfig.showWhatsApp = remoteConfig.getBool(WA_ACCOUNT_ENABLE_KEY);
+
   if (AppConfig.isEnglishLanguageEnable) {
     isArabicLanguage = await PrefManger().getIsArabic();
   }
@@ -43,12 +55,6 @@ void main() async {
     Hive.registerAdapter(WishlistModelAdapter());
     await Hive.openBox<WishlistModel>('wishlist_box');
   }
-
-/*
-  final PendingDynamicLinkData? initialLink =
-      await FirebaseDynamicLinks.instance.getInitialLink();
-  log("###+> ${initialLink?.link.toString()}");
-*/
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -73,7 +79,7 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         designSize: const Size(375, 812),
-        builder: (context, child) => GetMaterialApp(
+        builder: (context,child) => GetMaterialApp(
           builder: (context, widget) {
             //add this line
             ScreenUtil.init(context);
