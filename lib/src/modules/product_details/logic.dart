@@ -279,11 +279,11 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
         if (key == element.id) {
           if ((mapTextEditController[element.id]?.text.length ?? 0) > 0) {
             list.add(CustomUserInputFieldRequest(
-                priceSettings: element.id,
-                groupId: element.id,
-                name: element.label,
-                value: mapTextEditController[element.id]?.text,
-                type: element.type)
+                    priceSettings: element.id,
+                    groupId: element.id,
+                    name: element.label,
+                    value: mapTextEditController[element.id]?.text,
+                    type: element.type)
                 .toJson());
           }
         }
@@ -295,13 +295,13 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
         if (key == customOption.id) {
           if ((mapDropDownChoices[customOption.id]?.length ?? 0) > 0) {
             list.add(CustomOptionFieldRequest(
-                priceSettings: {customOption.id: value},
-                groupId: customOption.id,
-                groupName: customOption.name,
-                value: "✔",
-                name:
-                customOption.choices?.firstWhere((element) => element.id == value).ar ?? '',
-                type: customOption.type)
+                    priceSettings: {customOption.id: value},
+                    groupId: customOption.id,
+                    groupName: customOption.name,
+                    value: "✔",
+                    name:
+                        customOption.choices?.firstWhere((element) => element.id == value).ar ?? '',
+                    type: customOption.type)
                 .toJson());
           }
         }
@@ -320,15 +320,15 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
             });
             checkedList.forEach((elementCheck) {
               list.add(CustomOptionFieldRequest(
-                  priceSettings: {key: elementCheck},
-                  groupId: customOption.id,
-                  groupName: customOption.name,
-                  value: "✔",
-                  name: productModel?.customOptionFields
-                      ?.firstWhere((element) => element.id == key)
-                      .name ??
-                      '',
-                  type: customOption.type)
+                      priceSettings: {key: elementCheck},
+                      groupId: customOption.id,
+                      groupName: customOption.name,
+                      value: "✔",
+                      name: productModel?.customOptionFields
+                              ?.firstWhere((element) => element.id == key)
+                              .name ??
+                          '',
+                      type: customOption.type)
                   .toJson());
             });
           }
@@ -410,7 +410,7 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
       var response = await _apiRequests.getProductDetails(productId);
       //  log(json.encode(response.data));
       productModel = ProductDetailsModel.fromJson(response.data);
-      if(productModel?.parentId!=null){
+      if (productModel?.parentId != null) {
         var response = await _apiRequests.getProductDetails(productModel?.parentId);
         productModel = ProductDetailsModel.fromJson(response.data);
       }
@@ -444,18 +444,14 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
         if (element.choices?.isNotEmpty == true) {
           onChangeOption(element.choices?[0], element, withUpdate: false);
 
-          if(productModel?.quantity == 0){
-
+          if (productModel?.quantity == 0) {
             var exist = false;
-            for (var i = 0; i < (element.choices?.length ?? 0); i++){
-              if(!exist) {
+            for (var i = 0; i < (element.choices?.length ?? 0); i++) {
+              if (!exist) {
                 onChangeOption(element.choices?[i], element, withUpdate: false);
               }
-              if(productModel?.quantity != 0) exist = true;
-
-
+              if (productModel?.quantity != 0) exist = true;
             }
-
           }
         }
       });
@@ -508,7 +504,6 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
     });
   }
 
-
   updatePrices({required String caseName}) {
     double addonPrices = 0;
     productModel?.customFields?.forEach((element) {
@@ -522,7 +517,8 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
             selectedIds.remove(elementChoices.id);
           }
         });
-      } if (element.type == 'DROPDOWN' && (caseName == 'DROPDOWN' || caseName == 'ALL')) {
+      }
+      if (element.type == 'DROPDOWN' && (caseName == 'DROPDOWN' || caseName == 'ALL')) {
         element.choices?.forEach((elementChoices) {
           log(elementChoices.isSelected.toString());
           if (elementChoices.isSelected && !selectedIds.contains(elementChoices.id)) {
@@ -584,7 +580,7 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
   Future<List<String?>?> uploadFileImage(bool isFile, String id) async {
     List<String?>? path;
     FilePickerResult? result =
-    await FilePicker.platform.pickFiles(type: isFile ? FileType.any : FileType.image);
+        await FilePicker.platform.pickFiles(type: isFile ? FileType.any : FileType.image);
 
     final file = File(result?.files.single.path ?? '');
     int sizeInBytes = file.lengthSync();
@@ -616,7 +612,7 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
     try {
       var res = await _apiRequests.getSimpleBundleOffer(productRelatedIds);
       List<OfferResponseModel> offerList =
-      (res.data['payload'] as List).map((e) => OfferResponseModel.fromJson(e)).toList();
+          (res.data['payload'] as List).map((e) => OfferResponseModel.fromJson(e)).toList();
 
       offerList.forEach((elementOffer) {
         productModel?.relatedProducts?.forEach((element) {
@@ -629,6 +625,7 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
   }
 
   goToWhatsApp({String? message}) async {
+    String? whatsAppUrlFromRemote;
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(minutes: 1),
       minimumFetchInterval: const Duration(minutes: 1),
@@ -636,20 +633,29 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
     await remoteConfig.ensureInitialized();
     try {
       await remoteConfig.fetchAndActivate();
+      whatsAppUrlFromRemote = remoteConfig.getString(WA_PRODUCT_KEY);
     } catch (e) {}
     String whatsAppUrl = "";
-    String whatsAppUrlFromRemote = remoteConfig.getString(WA_PRODUCT_KEY);
-    String whatsAppUrlFromRemoteWithDes = whatsAppUrlFromRemote = '$whatsAppUrlFromRemote$message';
+    String whatsAppUrlFromRemoteWithDes = '$whatsAppUrlFromRemote$whatsAppUrlFromRemote$message';
     String phoneNumber = _mainLogic.settingModel?.footer?.socialMedia?.items?.phone ?? '';
     whatsAppUrl = 'https://wa.me/+$phoneNumber?text=${Uri.encodeComponent(message ?? '')}';
     whatsAppUrl = whatsAppUrl.replaceAll('++', '+');
 
-    var whatsAppUri = Uri.parse(whatsAppUrlFromRemote.isEmpty ? whatsAppUrl : whatsAppUrlFromRemoteWithDes);
-    if (await canLaunchUrl(whatsAppUri)) {
-      log(whatsAppUri.toString());
-      await launchUrl(whatsAppUri);
+    var whatsAppUrlString = ((whatsAppUrlFromRemote == null || whatsAppUrlFromRemote.isEmpty)
+        ? whatsAppUrl
+        : whatsAppUrlFromRemoteWithDes);
+    log(whatsAppUrlString);
+    log(whatsAppUrlFromRemote ?? '');
+    if (Platform.isAndroid) {
+      if (await canLaunch(whatsAppUrlString)) {
+        await launch(whatsAppUrlString);
+      } else if (await canLaunchUrl(Uri.parse(whatsAppUrlString))) {
+        await launchUrl(Uri.parse(whatsAppUrlString));
+      }
     } else {
-      // Get.snackbar("Whats App Error".tr, "Install WhatsApp First Please".tr);
+      if (await canLaunchUrl(Uri.parse(whatsAppUrlString))) {
+        await launchUrl(Uri.parse(whatsAppUrlString));
+      }
     }
   }
 }

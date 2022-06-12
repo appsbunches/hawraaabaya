@@ -183,7 +183,7 @@ class _SliderWidgetState extends State<SliderWidget> {
                   height: free ? null : double.infinity,
                   size: 80,
                   showErrorImage: false,
-                  fit: BoxFit.fitWidth,
+                  fit: AppConfig.sliderFit,
                 )
               : sliderItem.link?.contains('youtube.com') == true
                   ? YoutubePlayerIFrame(controller: _youtubeController, gestureRecognizers: null

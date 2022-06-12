@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class AppConfig {
   static bool liteVersion = false;
 
@@ -47,10 +49,13 @@ class AppConfig {
   
   static const bool isDeleteAccountEnable = true;
 
+
   //New
   static const double paddingBetweenWidget = 5;
 
   static const double sliderAspectRatio = 2.33;
+
+  static const BoxFit sliderFit = BoxFit.fitWidth;
 
 
 }

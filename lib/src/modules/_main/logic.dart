@@ -6,6 +6,7 @@ import 'package:entaj/src/modules/wishlist/view.dart';
 import 'package:html/parser.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../../app_config.dart';
 import '../../data/hive/wishlist/hive_controller.dart';
 import '../../data/remote/api_requests.dart';
@@ -35,18 +36,28 @@ class MainLogic extends GetxController {
   final ApiRequests _apiRequests = Get.find();
   final DeliveryOptionLogic _deliveryOptionLogic = Get.find();
 
+  void _handleNotificationOpened(OSNotificationOpenedResult result) {
+    var additionalData = result.notification.additionalData;
+    if(additionalData != null){
+      if(additionalData.containsKey("url")){
+        goToLink(result.notification.additionalData?['url']);
+      }
+    }
+  }
+
   @override
   void onInit() async {
     log("INIT ==> MainLogic");
+//    OneSignal.shared.setNotificationOpenedHandler(_handleNotificationOpened);
+
     var subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       if (result != ConnectivityResult.none) {
-        if(!hasInternet){
+        if (!hasInternet) {
           if (categoriesList.isEmpty && !isCategoriesLoading) getCategories();
           if (settingModel == null && !isStoreSettingLoading) getStoreSetting();
           if (pageModelPrivacy == null && !isStoreSettingLoading) getStoreSetting();
         }
-        hasInternet =true;
-
+        hasInternet = true;
       }
     });
     super.onInit();
@@ -83,17 +94,6 @@ class MainLogic extends GetxController {
   get navigatorValue => _navigatorValue;
 
   get currentScreen => _currentScreen;
-
-  Future<void> getFaqs() async {
-    selectedIndex = null;
-    try {
-      var res = await _apiRequests.getFaqs();
-      faqList = (res.data['payload'] as List).map((e) => FaqModel.fromJson(e)).toList();
-    } catch (e) {
-      ErrorHandler.handleError(e);
-    }
-    update(['faq']);
-  }
 
   openTap(int index) {
     if (selectedIndex == index) {
@@ -177,20 +177,17 @@ class MainLogic extends GetxController {
 
   goToLinkedin() {
     launch(
-        "https://www.snapchat.com/add/${homeScreenModel?.storeDescription?.socialMediaIcons
-            ?.snapchat}");
+        "https://www.snapchat.com/add/${homeScreenModel?.storeDescription?.socialMediaIcons?.snapchat}");
   }
 
   goToInstagram() {
     launch(
-        "https://www.instagram.com/${homeScreenModel?.storeDescription?.socialMediaIcons
-            ?.instagram}");
+        "https://www.instagram.com/${homeScreenModel?.storeDescription?.socialMediaIcons?.instagram}");
   }
 
   goToFacebook() {
     launch(
-        "https://www.facebook.com/${homeScreenModel?.storeDescription?.socialMediaIcons
-            ?.facebook}");
+        "https://www.facebook.com/${homeScreenModel?.storeDescription?.socialMediaIcons?.facebook}");
   }
 
   void goToSearch() {
@@ -214,19 +211,9 @@ class MainLogic extends GetxController {
       settingModel = SettingModel.fromJson(response.data['payload']);
       var storefrontThemeId = settingModel?.settings?.storefrontTheme?.id;
       log("storefrontThemeId => " + storefrontThemeId.toString());
-      if (storefrontThemeId == softThemeId) {
-        AppConfig.isSoreUseNewTheme = true;
-        AppConfig.currentThemeId = storefrontThemeId;
-        getHomeScreen(themeId: storefrontThemeId);
-      } else if (storefrontThemeId == eshraqThemeId) {
-        AppConfig.isSoreUseNewTheme = true;
-        AppConfig.currentThemeId = storefrontThemeId;
-        getHomeScreen(themeId: storefrontThemeId);
-      } else if (storefrontThemeId == eshraqThemeId) {
-        AppConfig.isSoreUseNewTheme = true;
-        AppConfig.currentThemeId = storefrontThemeId;
-        getHomeScreen(themeId: storefrontThemeId);
-      } else if (storefrontThemeId == ghassqThemeId) {
+      if (storefrontThemeId == softThemeId ||
+          storefrontThemeId == eshraqThemeId ||
+          storefrontThemeId == ghassqThemeId) {
         AppConfig.isSoreUseNewTheme = true;
         AppConfig.currentThemeId = storefrontThemeId;
         getHomeScreen(themeId: storefrontThemeId);
@@ -251,8 +238,19 @@ class MainLogic extends GetxController {
     update();
   }
 
+  Future<void> getFaqs() async {
+    selectedIndex = null;
+    try {
+      var res = await _apiRequests.getFaqs();
+      faqList = (res.data['payload'] as List).map((e) => FaqModel.fromJson(e)).toList();
+    } catch (e) {
+      ErrorHandler.handleError(e);
+    }
+    update(['faq']);
+  }
+
   Future<void> getPages(bool forceLoading) async {
-    if(!await checkInternet()) return;
+    if (!await checkInternet()) return;
     getFaqs();
     getLicense();
     getPrivacyPolicy();
@@ -282,8 +280,10 @@ class MainLogic extends GetxController {
     update(['categories', 'categories2', 'categoriesMenu']);
     try {
       var response = await _apiRequests.getCategories();
-      categoriesList =
-          (response.data['payload'] as List).map((e) => CategoryModel.fromJson(e)).toList();
+      categoriesList = [];
+      categoriesList.add(CategoryModel.fromJson({'id': '*', 'name': 'جميع المنتجات'.tr }));
+      categoriesList.addAll(
+          (response.data['payload'] as List).map((e) => CategoryModel.fromJson(e)).toList());
     } catch (e) {
       hasInternet = await ErrorHandler.handleError(e);
     }
@@ -487,7 +487,7 @@ class MainLogic extends GetxController {
 
       var res = await _apiRequests.getSimpleBundleOffer(productsIds);
       List<OfferResponseModel> offerList =
-      (res.data['payload'] as List).map((e) => OfferResponseModel.fromJson(e)).toList();
+          (res.data['payload'] as List).map((e) => OfferResponseModel.fromJson(e)).toList();
 
       homeScreenModel?.featuredProducts?.items?.forEach((elementProduct) {
         offerList.forEach((elementOffer) {

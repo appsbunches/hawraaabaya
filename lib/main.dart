@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:entaj/src/utils/functions.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'src/.env.dart';
+
 //import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +20,6 @@ import 'src/data/hive/wishlist/wishlist_model.dart';
 import 'src/data/shared_preferences/pref_manger.dart';
 import 'src/localization/translations.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-//import 'package:oktoast/oktoast.dart';
-
 import 'src/modules/category_details/view.dart';
 import 'src/modules/product_details/view.dart';
 import 'src/splash/view.dart';
@@ -27,6 +27,7 @@ import 'src/utils/dismiss_keyboard.dart';
 
 bool isArabicLanguage = true;
 late FirebaseRemoteConfig remoteConfig;
+String? notificationUrl;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,10 +44,9 @@ void main() async {
   await remoteConfig.ensureInitialized();
   try {
     await remoteConfig.fetchAndActivate();
+    AppConfig.showWhatsAppIconInProductPage = remoteConfig.getString(WA_PRODUCT_KEY).isNotEmpty;
+    AppConfig.showWhatsApp = remoteConfig.getBool(WA_ACCOUNT_ENABLE_KEY);
   } catch (e) {}
-
-  AppConfig.showWhatsAppIconInProductPage = remoteConfig.getString(WA_PRODUCT_KEY).isNotEmpty;
-  AppConfig.showWhatsApp = remoteConfig.getBool(WA_ACCOUNT_ENABLE_KEY);
 
   if (AppConfig.isEnglishLanguageEnable) {
     isArabicLanguage = await PrefManger().getIsArabic();
@@ -66,7 +66,18 @@ void main() async {
     log("Accepted permission: $accepted");
   });
 
+  OneSignal.shared.setNotificationOpenedHandler(_handleNotificationOpened);
+
   runApp(const MyApp());
+}
+
+void _handleNotificationOpened(OSNotificationOpenedResult result) {
+  var additionalData = result.notification.additionalData;
+  if (additionalData != null) {
+    if (additionalData.containsKey("url")) {
+      notificationUrl = result.notification.additionalData?['url'];
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -79,7 +90,7 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         designSize: const Size(375, 812),
-        builder: (context,child) => GetMaterialApp(
+        builder: (context, child) => GetMaterialApp(
           builder: (context, widget) {
             //add this line
             ScreenUtil.init(context);
@@ -108,12 +119,8 @@ class MyApp extends StatelessWidget {
                 foregroundColor: primaryColor,
               )),
           getPages: [
-            GetPage(
-                name: '/product-details/:productId',
-                page: () => ProductDetailsPage()),
-            GetPage(
-                name: '/category-details/:categoryId',
-                page: () => CategoryDetailsPage()),
+            GetPage(name: '/product-details/:productId', page: () => ProductDetailsPage()),
+            GetPage(name: '/category-details/:categoryId', page: () => const CategoryDetailsPage()),
           ],
           home: child,
         ),

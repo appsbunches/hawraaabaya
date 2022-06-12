@@ -3,7 +3,6 @@ import '../../main.dart';
 class ShippingMethodModel {
   int? id;
   String? name;
-  int? cost;
   String? costString;
   int? insidePickupCitiesCost;
   String? insidePickupCitiesCostString;
@@ -23,7 +22,8 @@ class ShippingMethodModel {
   bool? codAvailable;
   bool? codEnabled;
   List<City>? codCities;
-  int? codFee;
+  List<Cost>? cost;
+  List<Cost>? codFee;
   String? codFeeString;
   List<City>? availableCities;
   List<City>? selectCities;
@@ -43,7 +43,6 @@ class ShippingMethodModel {
 
   ShippingMethodModel.fromJson(dynamic json) {
     id = json['id'];
-    //   cost = json['cost'];
     costString = json['cost_string'];
     //insidePickupCitiesCost = json['inside_pickup_cities_cost'];
     insidePickupCitiesCostString = json['inside_pickup_cities_cost_string'];
@@ -69,6 +68,18 @@ class ShippingMethodModel {
         codCities?.add(City.fromJson(v));
       });
     }
+    if (json['cost'] != null) {
+      cost = [];
+      json['cost'].forEach((v) {
+        cost?.add(Cost.fromJson(v));
+      });
+    }
+    if (json['cod_fee'] != null) {
+      codFee = [];
+      json['cod_fee'].forEach((v) {
+        codFee?.add(Cost.fromJson(v));
+      });
+    }
     //codFee = json['cod_fee'];
     codFeeString = json['cod_fee_string'];
     if (json['available_cities'] != null) {
@@ -77,9 +88,9 @@ class ShippingMethodModel {
         availableCities?.add(City.fromJson(v));
       });
     }
-    if (json['select_cities'] != null) {
+    if (json['delivery_option_cities'] != null) {
       selectCities = [];
-      json['select_cities'].forEach((v) {
+      json['delivery_option_cities'].forEach((v) {
         selectCities?.add(City.fromJson(v));
       });
     }
@@ -118,6 +129,18 @@ class ShippingMethodModel {
     courierIcons = json['courier_icons'];
  //   meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
   //  metaForCart = json['meta_for_cart'] != null ? Meta.fromJson(json['meta_for_cart']) : null;
+  }
+}
+
+class Cost {
+  String? title;
+  String? costString;
+  String? codFeeString;
+
+  Cost.fromJson(dynamic json) {
+    title = json['title'];
+    costString = json['cost_string'];
+    codFeeString = json['cod_fee_string'];
   }
 }
 

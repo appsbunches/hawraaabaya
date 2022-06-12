@@ -31,19 +31,18 @@ class DeliveryOptionPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 20,
-                ),
                 Expanded(
                     child: logic.loading
                         ? const CustomProgressIndicator()
                         : ListView.builder(
                             itemCount: logic.listShippingMethods.length,
+                            padding: const EdgeInsets.only(top: 20),
                             itemBuilder: (BuildContext context, int index) => Column(
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       const SizedBox(
                                         height: 10,
@@ -112,127 +111,104 @@ class DeliveryOptionPage extends StatelessWidget {
                                           )
                                         ],
                                       ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            iconCoins,
-                                            scale: 2,
-                                          ),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              CustomText(
-                                                "تكلفة الشحن".tr,
-                                                fontWeight: FontWeight.bold,
-                                                color: secondaryColor,
-                                                fontSize: 10,
-                                              ),
-                                              CustomText(
-                                                logic.listShippingMethods[index]
-                                                    .costString,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 14,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      if(logic.listShippingMethods[index].insidePickupCitiesCostString !=null)
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            iconCoins,
-                                            scale: 2,
-                                            color: Colors.white,
-                                          ),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              CustomText(
-                                                "تكلفة الشحن داخل مدينة التاجر".tr,
-                                                fontWeight: FontWeight.bold,
-                                                color: secondaryColor,
-                                                fontSize: 10,
-                                              ),
-                                              CustomText(
-                                                logic.listShippingMethods[index]
-                                                    .insidePickupCitiesCostString,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 14,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      if(logic.listShippingMethods[index].outsidePickupCitiesCostString !=null)
-                                        Row(
-                                        children: [
-                                          Image.asset(
-                                            iconCoins,
-                                            color: Colors.white,
-                                            scale: 2,
-                                          ),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              CustomText(
-                                                "تكلفة الشحن خارج مدينة التاجر".tr,
-                                                fontWeight: FontWeight.bold,
-                                                color: secondaryColor,
-                                                fontSize: 10,
-                                              ),
-                                              CustomText(
-                                                logic.listShippingMethods[index]
-                                                    .outsidePickupCitiesCostString,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 14,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      if (logic.listShippingMethods[index].codEnabled == true ||
-                                          logic.listShippingMethods[index].codAvailable == true)
-                                        Row(
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                        child: Row(
                                           children: [
                                             Image.asset(
                                               iconCoins,
-                                              color: Colors.white,
                                               scale: 2,
                                             ),
                                             const SizedBox(
                                               width: 20,
                                             ),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                CustomText(
-                                                  "الدفع عند الاستلام".tr,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: secondaryColor,
-                                                  fontSize: 10,
-                                                ),
-                                                CustomText(
-                                                  logic.listShippingMethods[index].codFeeString,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14,
-                                                ),
-                                              ],
+                                            CustomText(
+                                              "تكلفة الشحن".tr,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ],
                                         ),
+                                      ),
+                                      GridView.builder(
+                                        itemCount:
+                                            logic.listShippingMethods[index].cost?.length ?? 0,
+                                        shrinkWrap: true,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        itemBuilder: (context, index1) {
+                                          var item = logic.listShippingMethods[index].cost?[index1];
+                                          return Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              CustomText(
+                                                item?.title ?? "تكلفة الشحن".tr,
+                                                fontWeight: FontWeight.bold,
+                                                color: secondaryColor,
+                                                fontSize: 10,
+                                              ),
+                                              CustomText(
+                                                item?.costString,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 2 ,childAspectRatio: 2.4),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              iconCoins,
+                                              scale: 2,
+                                            ),
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
+                                            CustomText(
+                                              "الدفع عند الاستلام".tr,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      if (logic.listShippingMethods[index].codEnabled == true &&
+                                          logic.listShippingMethods[index].codFee?.isNotEmpty ==
+                                              true)
+                                        GridView.builder(
+                                            itemCount:
+                                                logic.listShippingMethods[index].codFee?.length ??
+                                                    0,
+                                            shrinkWrap: true,
+                                            gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 2 ,childAspectRatio: 2.4),
+                                            physics: const NeverScrollableScrollPhysics(),
+                                            itemBuilder: (context, index1) {
+                                              var item =
+                                                  logic.listShippingMethods[index].codFee?[index1];
+                                              return Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  CustomText(
+                                                    item?.title ?? "الدفع عند الاستلام".tr,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: secondaryColor,
+                                                    fontSize: 10,
+                                                  ),
+                                                  CustomText(
+                                                    item?.codFeeString,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14,
+                                                  ),
+                                                ],
+                                              );
+                                            }),
                                       const SizedBox(
                                         height: 10,
                                       ),

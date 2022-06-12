@@ -14,7 +14,6 @@ import '../../utils/error_handler/error_handler.dart';
 import '../../utils/functions.dart';
 import '../../utils/item_widget/item_category.dart';
 import '../_main/logic.dart';
-import '../dialog/filter_dialog.dart';
 import '../no_Internet_connection_screen.dart';
 import '../../utils/custom_widget/custom_sized_box.dart';
 import '../../utils/custom_widget/custom_text.dart';
@@ -108,7 +107,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
   getCategoryDetails(String categoryId) async {
     categoryModel = null;
     isCategoryLoading = true;
-   // setState(() {});
+    // setState(() {});
     //update([categoryId]);
     try {
       var response = await _apiRequests.getCategoryDetails(categoryId);
@@ -134,16 +133,21 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
     try {
       var response = widget.hideHeaderFooter
           ? await _apiRequests.getProductsList(
-          page: page,
-          listingPriceGte: filter ? startPriceController.text : null,
-          listingPriceLte: filter ? endPriceController.text : null)
+              page: page,
+              listingPriceGte: filter ? startPriceController.text : null,
+              listingPriceLte: filter ? endPriceController.text : null)
           : await _apiRequests.getProductsList(
-          categoryList: filterUrl != null ? null : [categoryId],
-          page: page,
-          sale_price__isnull: filterUrl?.contains('sale'),
-          ordering: filterUrl?.contains('recent_products') == true ? '-created_at' :  getOrdering(),
-          listingPriceGte: filter ? startPriceController.text : null,
-          listingPriceLte: filter ? endPriceController.text : null);
+              categoryList: filterUrl != null
+                  ? null
+                  : categoryId == '*'
+                      ? null
+                      : [categoryId],
+              page: page,
+              sale_price__isnull: filterUrl?.contains('sale'),
+              ordering:
+                  filterUrl?.contains('recent_products') == true ? '-created_at' : getOrdering(),
+              listingPriceGte: filter ? startPriceController.text : null,
+              listingPriceLte: filter ? endPriceController.text : null);
       var newList = (response.data['results'] as List)
           .map((element) => ProductDetailsModel.fromJson(element))
           .toList();
@@ -159,7 +163,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
 
       var res = await _apiRequests.getSimpleBundleOffer(productsIds);
       List<OfferResponseModel> offerList =
-      (res.data['payload'] as List).map((e) => OfferResponseModel.fromJson(e)).toList();
+          (res.data['payload'] as List).map((e) => OfferResponseModel.fromJson(e)).toList();
 
       productsList.forEach((elementProduct) {
         offerList.forEach((elementOffer) {
@@ -293,48 +297,48 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
             appBar: widget.hideHeaderFooter
                 ? null
                 : AppBar(
-              actions: [
-                InkWell(
-                    onTap: () => goToSearch(),
-                    child: Image.asset(
-                      iconSearch,
-                      scale: 2,
-                    )),
-              ],
-              title: CustomText(
-                categoryModel?.name,
-                fontSize: 16,
-              ),
-            ),
+                    actions: [
+                      InkWell(
+                          onTap: () => goToSearch(),
+                          child: Image.asset(
+                            iconSearch,
+                            scale: 2,
+                          )),
+                    ],
+                    title: CustomText(
+                      categoryId == '*' ? 'جميع المنتجات'.tr :categoryModel?.name ,
+                      fontSize: 16,
+                    ),
+                  ),
             backgroundColor: Colors.grey.shade50,
             body: !hasInternet
                 ? const NoInternetConnectionScreen()
                 : isCategoryLoading || isProductsLoading
-                ? const CustomProgressIndicator()
-                : RefreshIndicator(
-              onRefresh: () => clearAndFetch(),
-              child: Container(
-                padding: EdgeInsets.fromLTRB(10.w, 0, 10.w, 0),
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: Column(
-                    children: [
-                      buildCategories(logic),
-                      if (productsList.isNotEmpty && AppConfig.showSubCategoriesAsGrid ||
-                          !AppConfig.showSubCategoriesAsGrid)
-                        buildFilter(logic),
-                      const SizedBox(
-                        height: 10,
+                    ? const CustomProgressIndicator()
+                    : RefreshIndicator(
+                        onRefresh: () => clearAndFetch(),
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(10.w, 0, 10.w, 0),
+                          child: SingleChildScrollView(
+                            controller: scrollController,
+                            child: Column(
+                              children: [
+                                buildCategories(logic),
+                                if (productsList.isNotEmpty && AppConfig.showSubCategoriesAsGrid ||
+                                    !AppConfig.showSubCategoriesAsGrid)
+                                  buildFilter(logic),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                if ((AppConfig.showSubCategoriesAsGrid &&
+                                        productsList.isNotEmpty) ||
+                                    (!AppConfig.showSubCategoriesAsGrid))
+                                  buildProducts(),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                      if ((AppConfig.showSubCategoriesAsGrid &&
-                          productsList.isNotEmpty) ||
-                          (!AppConfig.showSubCategoriesAsGrid))
-                        buildProducts(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
           );
         });
   }
@@ -348,34 +352,34 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
               isProductsLoading
                   ? const CustomProgressIndicator()
                   : productsList.isEmpty
-                  ? SizedBox(
-                height: productsList.isEmpty && subCategories.isNotEmpty ? 0 : 500.h,
-                child: Center(
-                  child: SizedBox(
-                      width: double.infinity,
-                      child: CustomText(
-                        'لا يوجد منتجات حالياً'.tr,
-                        textAlign: TextAlign.center,
-                      )),
-                ),
-              )
-                  : GridView.builder(
-                itemCount: productsList.length,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                padding: const EdgeInsets.only(bottom: 20),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: 0.55),
-                itemBuilder: (context, index) => ItemProduct(
-                  productsList[index],
-                  backCount: getBackCount(categoryId) + 1,
-                  horizontal: false,
-                  forWishlist: false,
-                ),
-              ),
+                      ? SizedBox(
+                          height: productsList.isEmpty && subCategories.isNotEmpty ? 0 : 500.h,
+                          child: Center(
+                            child: SizedBox(
+                                width: double.infinity,
+                                child: CustomText(
+                                  'لا يوجد منتجات حالياً'.tr,
+                                  textAlign: TextAlign.center,
+                                )),
+                          ),
+                        )
+                      : GridView.builder(
+                          itemCount: productsList.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.only(bottom: 20),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
+                              childAspectRatio: 0.55),
+                          itemBuilder: (context, index) => ItemProduct(
+                            productsList[index],
+                            backCount: getBackCount(categoryId) + 1,
+                            horizontal: false,
+                            forWishlist: false,
+                          ),
+                        ),
               if (isUnderLoading)
                 Container(
                   alignment: Alignment.center,
@@ -393,91 +397,91 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
     return productsList.isEmpty && subCategories.isNotEmpty
         ? const SizedBox()
         : Row(
-      children: [
-        Expanded(
-            child: InkWell(
-              onTap: () => openFilterDialog(),
-              child: Container(
+            children: [
+              Expanded(
+                  child: InkWell(
+                onTap: () => openFilterDialog(),
+                child: Container(
+                  height: 44.h,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade100, borderRadius: BorderRadius.circular(15.sp)),
+                  child: Row(
+                    children: [
+                      CustomText(
+                        "السعر".tr,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      const Spacer(),
+                      const Icon(Icons.keyboard_arrow_down)
+                    ],
+                  ),
+                ),
+              )),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                  child: Container(
                 height: 44.h,
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
                     color: Colors.grey.shade100, borderRadius: BorderRadius.circular(15.sp)),
                 child: Row(
                   children: [
-                    CustomText(
-                      "السعر".tr,
-                      fontWeight: FontWeight.bold,
+                    Image.asset(
+                      iconFilter,
+                      scale: 2,
                     ),
-                    const Spacer(),
-                    const Icon(Icons.keyboard_arrow_down)
-                  ],
-                ),
-              ),
-            )),
-        const SizedBox(
-          width: 10,
-        ),
-        Expanded(
-            child: Container(
-              height: 44.h,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade100, borderRadius: BorderRadius.circular(15.sp)),
-              child: Row(
-                children: [
-                  Image.asset(
-                    iconFilter,
-                    scale: 2,
-                  ),
-                  Expanded(
-                    child: GetBuilder<CategoryDetailsLogic>(
-                        id: 'sort',
-                        builder: (logic) {
-                          return DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              isExpanded: true,
-                              onChanged: onSortChanged,
-                              value: selectedSort,
-                              hint: SizedBox(
-                                child: Row(
-                                  children: [
-                                    const CustomSizedBox(
-                                      width: 5,
-                                    ),
-                                    CustomText(
-                                      sortList.first,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              items: sortList
-                                  .map((e) => DropdownMenuItem(
-                                child: SizedBox(
+                    Expanded(
+                      child: GetBuilder<CategoryDetailsLogic>(
+                          id: 'sort',
+                          builder: (logic) {
+                            return DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                isExpanded: true,
+                                onChanged: onSortChanged,
+                                value: selectedSort,
+                                hint: SizedBox(
                                   child: Row(
                                     children: [
                                       const CustomSizedBox(
                                         width: 5,
                                       ),
                                       CustomText(
-                                        e,
+                                        sortList.first,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ],
                                   ),
                                 ),
-                                value: e,
-                              ))
-                                  .toList(),
-                            ),
-                          );
-                        }),
-                  ),
-                ],
-              ),
-            )),
-      ],
-    );
+                                items: sortList
+                                    .map((e) => DropdownMenuItem(
+                                          child: SizedBox(
+                                            child: Row(
+                                              children: [
+                                                const CustomSizedBox(
+                                                  width: 5,
+                                                ),
+                                                CustomText(
+                                                  e,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          value: e,
+                                        ))
+                                    .toList(),
+                              ),
+                            );
+                          }),
+                    ),
+                  ],
+                ),
+              )),
+            ],
+          );
   }
 
   buildCategories(CategoryDetailsLogic logic) {
@@ -489,47 +493,47 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
           return isProductsLoading
               ? const SizedBox()
               : (subCategories.isNotEmpty)
-              ? (AppConfig.showSubCategoriesAsGrid && productsList.isEmpty ||
-              productsList.isEmpty && subCategories.isNotEmpty)
-              ? GridView.builder(
-              itemCount: subCategories.length,
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 10),
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  childAspectRatio: 1),
-              itemBuilder: (context, index) => ItemCategory(subCategories[index], 100))
-              : SizedBox(
-            height: subCategories.isEmpty
-                ? 0
-                : AppConfig.showSubCategoriesAsGrid
-                ? 170.h
-                : 58.h,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 10.h,
-                ),
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: subCategories.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return AppConfig.showSubCategoriesAsGrid
-                            ? ItemCategory(subCategories[index], 120)
-                            : ItemHomeCategory(subCategories[index]);
-                      }),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-              ],
-            ),
-          )
-              : const SizedBox();
+                  ? (AppConfig.showSubCategoriesAsGrid && productsList.isEmpty ||
+                          productsList.isEmpty && subCategories.isNotEmpty)
+                      ? GridView.builder(
+                          itemCount: subCategories.length,
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.only(top: 10),
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
+                              childAspectRatio: 1),
+                          itemBuilder: (context, index) => ItemCategory(subCategories[index], 100))
+                      : SizedBox(
+                          height: subCategories.isEmpty
+                              ? 0
+                              : AppConfig.showSubCategoriesAsGrid
+                                  ? 170.h
+                                  : 58.h,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                    itemCount: subCategories.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return AppConfig.showSubCategoriesAsGrid
+                                          ? ItemCategory(subCategories[index], 120)
+                                          : ItemHomeCategory(subCategories[index]);
+                                    }),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                            ],
+                          ),
+                        )
+                  : const SizedBox();
         });
   }
 
@@ -598,7 +602,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
                                     decoration: InputDecoration(
                                         counter: const SizedBox.shrink(),
                                         hintText:
-                                        HiveController.generalBox.get('currency') ?? 'SAR',
+                                            HiveController.generalBox.get('currency') ?? 'SAR',
                                         contentPadding: EdgeInsets.zero,
                                         border: const OutlineInputBorder()),
                                     style: TextStyle(fontSize: (14 + AppConfig.fontDecIncValue).sp),
@@ -632,7 +636,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
                                     decoration: InputDecoration(
                                         counter: const SizedBox.shrink(),
                                         hintText:
-                                        HiveController.generalBox.get('currency') ?? 'SAR',
+                                            HiveController.generalBox.get('currency') ?? 'SAR',
                                         contentPadding: EdgeInsets.zero,
                                         border: const OutlineInputBorder()),
                                     style: TextStyle(fontSize: (14 + AppConfig.fontDecIncValue).sp),

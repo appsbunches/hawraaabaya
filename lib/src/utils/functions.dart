@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:entaj/src/modules/delivery_option/view.dart';
@@ -74,11 +75,14 @@ goToLink(String? link) async {
       return;
     }
   }
-  var url = Uri.parse(link);
-  if (await canLaunchUrl(url)) {
-    await launchUrl(url);
-  } else {
-    log("can't launch $url");
+  if(Platform.isAndroid){
+    if (await canLaunch(link)) {
+      await launch(link);
+    }
+  }else{
+    if (await canLaunchUrl(Uri.parse(link))) {
+      await launchUrl(Uri.parse(link));
+    }
   }
 }
 

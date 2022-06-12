@@ -99,8 +99,8 @@ class Settings {
     controls = json['controls'];
     moreText = json['more_text'];
     try {
-      if ((moreText?.length ?? 0) > 11) {
-        moreText = moreText?.substring(0, 10);
+      if ((moreText?.length ?? 0) > 16) {
+        moreText = moreText?.substring(0, 15);
         moreText = '$moreText...';
       }
     } catch (e) {}

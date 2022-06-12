@@ -2,7 +2,6 @@ import 'package:entaj/src/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class CustomText extends StatelessWidget {
   final String? text;
   final double? fontSize;
@@ -39,7 +38,9 @@ class CustomText extends StatelessWidget {
           color: color,
           fontSize: fs.sp,
           overflow: overflow,
-          fontWeight: AppConfig.showTextAsBold ? FontWeight.bold : fontWeight,
+          fontWeight: fontWeight ?? (AppConfig.showTextAsBold
+              ? FontWeight.bold
+              : fontWeight),
           height: height),
       maxLines: maxLines,
     );

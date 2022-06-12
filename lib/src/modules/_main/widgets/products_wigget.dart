@@ -42,7 +42,7 @@ class ProductsWidget extends StatelessWidget {
                           flex: 3,
                           child: CustomText(
                             featuredProducts?.title ?? title,
-                            fontSize: 17,
+                            fontSize: 14,
                             color: primaryColor,
                             fontWeight: FontWeight.w900,
                           ),

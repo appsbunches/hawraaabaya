@@ -117,7 +117,7 @@ class ApiRequests extends ge.GetxController {
 
   Future<Response> getShippingMethods() async {
     await onInit();
-    return await _dioV2.get("catalog/stores/$storeId/shipping-methods");
+    return await _dioV2.get("catalog/stores/$storeId/payment-and-shipping-methods");
   }
 
   Future<Response> getPrivacyPolicy() async {

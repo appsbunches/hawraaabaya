@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:entaj/src/modules/faq/view.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -118,19 +119,23 @@ class AccountLogic extends GetxController {
     } catch (e) {}
     String whatsAppUrl = "";
     String whatsAppUrlFromRemote = remoteConfig.getString(WA_ACCOUNT_KEY);
-    log('whatsAppUrlFromRemote' + whatsAppUrlFromRemote);
+    log('whatsAppUrlFromRemote => ' + whatsAppUrlFromRemote);
     String phoneNumber = _mainLogic.settingModel?.footer?.socialMedia?.items?.phone ?? '';
     String description = "Hello, From App".tr;
     whatsAppUrl = 'https://wa.me/+$phoneNumber?text=${Uri.parse(description)}';
     whatsAppUrl = whatsAppUrl.replaceAll('++', '+');
 
-    var whatsAppUri = Uri.parse(whatsAppUrlFromRemote.isEmpty ? whatsAppUrl : whatsAppUrlFromRemote);
-    if (await canLaunchUrl(whatsAppUri)) {
-      log(whatsAppUri.toString());
-      await launchUrl(whatsAppUri);
-    } else {
-     // Get.snackbar("Whats App Error".tr, "Install WhatsApp First Please".tr);
+    var whatsAppUrlString = (whatsAppUrlFromRemote.isEmpty ? whatsAppUrl : whatsAppUrlFromRemote);
+    if(Platform.isAndroid){
+      if (await canLaunch(whatsAppUrlString)) {
+        await launch(whatsAppUrlString);
+      }
+    }else{
+      if (await canLaunchUrl(Uri.parse(whatsAppUrlString))) {
+        await launchUrl(Uri.parse(whatsAppUrlString));
+      }
     }
+
   }
 
   goToTwitter() {

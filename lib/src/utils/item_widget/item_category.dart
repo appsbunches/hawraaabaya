@@ -16,10 +16,8 @@ class ItemCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(20.sp),
-      onTap: () => categoryModel == null
-          ? null
-          : Get.toNamed("/category-details/${categoryModel?.id}"),
-/*Get.to(CategoryDetailsPage(categoryModel: categoryModel,) , binding: Binding())*/
+      onTap: () =>
+          categoryModel == null ? null : Get.toNamed("/category-details/${categoryModel?.id}"),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20.sp),
         child: Container(
@@ -52,8 +50,7 @@ class ItemCategory extends StatelessWidget {
                         maxLines: 1,
                       ),
                       CustomText(
-                        categoryModel?.description ??
-                            categoryModel?.sEOCategoryDescription,
+                        categoryModel?.description ?? categoryModel?.sEOCategoryDescription,
                         textAlign: TextAlign.center,
                         fontWeight: FontWeight.w400,
                         fontSize: 10,

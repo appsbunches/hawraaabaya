@@ -31,7 +31,7 @@ class DeliveryOptionLogic extends GetxController {
     update();
     try {
       var response = await _apiRequests.getShippingMethods();
-      listShippingMethods = (response.data['payload'] as List)
+      listShippingMethods = (response.data['payload']['store_shipping_methods'] as List)
           .map((e) => ShippingMethodModel.fromJson(e))
           .toList();
     } catch (e) {

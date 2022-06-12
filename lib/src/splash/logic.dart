@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import '../.env.dart';
 import '../app_config.dart';
 import '../data/remote/api_requests.dart';
 import '../data/shared_preferences/pref_manger.dart';
@@ -14,6 +15,7 @@ import 'package:get/get.dart';
 import '../../../main.dart';
 import '../binding.dart';
 import '../modules/unauthenticated/view.dart';
+import '../utils/functions.dart';
 
 class SplashLogic extends GetxController {
   final PrefManger _prefManger = Get.find();
@@ -43,9 +45,9 @@ class SplashLogic extends GetxController {
       }
       seconds--;
 
-      accessToken = remoteConfig.getString('ACCESS_TOKEN');
+      accessToken = remoteConfig.getString(ACCESS_TOKEN_KEY);
       await _prefManger.setAccessToken(accessToken);
-      authorizationToken = remoteConfig.getString('AUTHORIZATION_TOKEN');
+      authorizationToken = remoteConfig.getString(AUTHORIZATION_TOKEN_KEY);
       await _prefManger.setAuthorizationToken(authorizationToken);
 
       await _prefManger.setIsFromRemote(true);
@@ -60,20 +62,18 @@ class SplashLogic extends GetxController {
     _mainLogic.getPages(false);
     _mainLogic.getCategories();
     _mainLogic.getStoreSetting();
-    _mainLogic.getPrivacyPolicy();
-    _mainLogic.getRefundPolicy();
-    _mainLogic.getTermsAndConditions();
-    _mainLogic.getComplaintsAndSuggestions();
-   // _mainLogic.getHomeScreen();
     await getSession();
     seconds--;
     await Future.delayed(Duration(seconds: seconds < 0 ? 0 : seconds));
     if (AppConfig.isEnglishLanguageEnable) {
       bool isNotFirstTime = await _prefManger.getIsNotFirstTime();
-      Get.off(isNotFirstTime ? const MainPage() : SelectLanguagePage(),
-          binding: Binding());
+      Get.off(isNotFirstTime ? const MainPage() : SelectLanguagePage(), binding: Binding());
     } else {
-      Get.off(const MainPage(), binding: Binding());
+      if (notificationUrl == null){
+        Get.off(const MainPage(), binding: Binding());
+      }else{
+        goToLink(notificationUrl);
+      }
     }
 
     super.onInit();
@@ -106,7 +106,7 @@ class SplashLogic extends GetxController {
       if (e is DioError) {
         if (e.response?.data['message']['description'] == 'Unauthenticated') {
           return false;
-        }else if (e.response?.data['message']['code'] == 'ERROR_SESSION_INVALID') {
+        } else if (e.response?.data['message']['code'] == 'ERROR_SESSION_INVALID') {
           return false;
         }
       }

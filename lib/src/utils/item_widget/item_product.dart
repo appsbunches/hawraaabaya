@@ -110,7 +110,7 @@ class _ItemProductState extends State<ItemProduct> {
                             ),
                             if (widget.product!.offerLabel != null)
                               PositionedDirectional(
-                                start: 0,
+                                end: 0,
                                 child: Container(
                                   width: widget.product!.offerLabel!.length > 30 ? 150.w : null,
                                   margin: const EdgeInsets.only(top: 10, left: 3, right: 3),
@@ -360,7 +360,6 @@ class _ItemProductState extends State<ItemProduct> {
                       final WishlistLogic logic = Get.find();
                       logic.removeItem(widget.product?.id);
                     }
-                    //  setState(() {});
                   }
                 },
                 child: ValueListenableBuilder<Box<WishlistModel>>(
