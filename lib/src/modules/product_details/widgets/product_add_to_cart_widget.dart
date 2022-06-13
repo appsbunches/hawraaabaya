@@ -456,7 +456,9 @@ class _ProductAddToCartWidgetState extends State<ProductAddToCartWidget> {
                                         icon: Image.asset(
                                           iconAddToCart,
                                           scale: 2,
-                                          color: textAddToCartColor,
+                                          color: !AppConfig.showButtonWithBorder
+                                              ? primaryColor
+                                              : Colors.white,
                                         ),
                                         height: double.infinity,
                                         loading: cartLogic.isCartLoading,

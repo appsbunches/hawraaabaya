@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:entaj/src/app_config.dart';
 import 'package:flutter/services.dart';
 
 import '../../../entities/category_model.dart';
@@ -91,7 +92,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       CustomText("خيارات الشحن".tr,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: AppConfig.showTextAsBold ? FontWeight.normal : FontWeight.bold,
                                           fontSize:
                                               14), /*
                               CustomText(
@@ -121,7 +122,7 @@ class _MyDrawerState extends State<MyDrawer> {
                             padding: const EdgeInsets.symmetric(horizontal: 12.0),
                             child: CustomText(
                               "طرق الدفع".tr,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: AppConfig.showTextAsBold ? FontWeight.normal : FontWeight.bold,
                             ),
                           ),
                           const SizedBox(
@@ -177,15 +178,8 @@ class _MyDrawerState extends State<MyDrawer> {
                                       scale: 2,
                                     ),
                                   ),
-                                if ((logic.settingModel?.settings?.vatSettings?.vatNumber != null &&
-                                        logic.settingModel?.settings?.vatSettings
-                                                ?.isVatNumberVisible ==
-                                            true) /*||
-                                    (logic.settingModel?.settings?.commercialRegistrationNumber !=
-                                            null &&
-                                        logic.settingModel?.settings
-                                                ?.commercialRegistrationNumberActivation ==
-                                            '1')*/)
+                                if (logic.settingModel?.settings?.vatSettings?.vatNumber != null &&
+                                        logic.settingModel?.settings?.vatSettings?.isVatNumberVisible == true)
                                   Expanded(
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -275,7 +269,7 @@ class _MyDrawerState extends State<MyDrawer> {
               padding: const EdgeInsets.all(15.0),
               child: CustomText(
                 category.name,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppConfig.showTextAsBold ? FontWeight.normal : FontWeight.bold,
               ),
             ),
           )
@@ -286,7 +280,7 @@ class _MyDrawerState extends State<MyDrawer> {
               },
               child: CustomText(
                 category.name,
-                fontWeight: FontWeight.bold,
+                fontWeight: AppConfig.showTextAsBold ? FontWeight.normal : FontWeight.bold,
               ),
             ),
             trailing: category.subCategories?.isEmpty == true ? const SizedBox() : null,

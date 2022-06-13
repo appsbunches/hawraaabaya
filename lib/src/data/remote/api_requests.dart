@@ -52,8 +52,8 @@ class ApiRequests extends ge.GetxController {
 
     _dioV2 = Dio(BaseOptions(
         baseUrl: baseUrl,
-        connectTimeout: 10000,
-        receiveTimeout: 8000,
+        connectTimeout: 120*1000, // 120 seconds
+        receiveTimeout: 120*1000, // 120 seconds
         headers: {
           'store-id': storeId,
           'Currency': currency,
@@ -72,8 +72,8 @@ class ApiRequests extends ge.GetxController {
 
     _dioV1 = Dio(BaseOptions(
         baseUrl: baseUrlV1,
-        connectTimeout: 10000,
-        receiveTimeout: 8000,
+        connectTimeout: 120*1000, // 120 seconds
+        receiveTimeout: 120*1000, // 120 seconds
         headers: {
           'store-id': storeId,
           'Currency': currency,

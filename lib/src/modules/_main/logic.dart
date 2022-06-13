@@ -281,7 +281,7 @@ class MainLogic extends GetxController {
     try {
       var response = await _apiRequests.getCategories();
       categoriesList = [];
-      categoriesList.add(CategoryModel.fromJson({'id': '*', 'name': 'جميع المنتجات'.tr }));
+      categoriesList.add(CategoryModel.fromJson({'id': '*', 'name': 'جميع المنتجات'.tr , 'sub_categories':[] }));
       categoriesList.addAll(
           (response.data['payload'] as List).map((e) => CategoryModel.fromJson(e)).toList());
     } catch (e) {

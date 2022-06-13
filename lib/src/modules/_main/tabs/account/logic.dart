@@ -139,31 +139,26 @@ class AccountLogic extends GetxController {
   }
 
   goToTwitter() {
-    log(_mainLogic.settingModel?.footer?.socialMedia?.items?.twitter ?? '');
     launchUrl(Uri.parse(
         "https://www.twitter.com/${_mainLogic.settingModel?.footer?.socialMedia?.items?.twitter}"));
   }
 
   goToLinkedin() {
-    log(_mainLogic.settingModel?.footer?.socialMedia?.items?.snapchat ?? '');
     launchUrl(Uri.parse(
         "https://www.snapchat.com/add/${_mainLogic.settingModel?.footer?.socialMedia?.items?.snapchat}"));
   }
 
   goToInstagram() {
-    log(_mainLogic.settingModel?.footer?.socialMedia?.items?.instagram ?? '');
     launchUrl(Uri.parse(
         "https://www.instagram.com/${_mainLogic.settingModel?.footer?.socialMedia?.items?.instagram}"));
   }
 
   goToFacebook() {
-    log(_mainLogic.settingModel?.footer?.socialMedia?.items?.facebook ?? '');
     launchUrl(Uri.parse(
         "https://www.facebook.com/${_mainLogic.settingModel?.footer?.socialMedia?.items?.facebook}"));
   }
 
   goToPhone() {
-    log(_mainLogic.settingModel?.footer?.socialMedia?.items?.phone ?? '');
     launchUrl(Uri.parse(
         "tel:${_mainLogic.settingModel?.footer?.socialMedia?.items?.phone}"));
   }

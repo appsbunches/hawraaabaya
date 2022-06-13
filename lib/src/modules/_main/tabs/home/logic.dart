@@ -195,6 +195,7 @@ class HomeLogic extends GetxController {
       });
     } else {
       announcementBarText = _mainLogic.settingModel?.header?.announcementBar?.text;
+      announcementBarLink = _mainLogic.settingModel?.header?.announcementBar?.link;
       announcementBarDisplay = announcementBarText != null &&
           announcementBarText != '' &&
           _mainLogic.settingModel?.header?.announcementBar?.enabled == true &&

@@ -198,5 +198,6 @@ const Map<String, String> en = {
   'إحذف حسابي': 'Delete my account',
   'رقم السجل التجاري': 'Commercial Registration Number',
   'جميع المنتجات': 'Products',
+  'هذا المنتج لم يعد متوفرا': 'This product is\'t available',
   '':'',
 };

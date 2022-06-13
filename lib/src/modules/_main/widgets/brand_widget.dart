@@ -38,24 +38,39 @@ class BrandWidget extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                SizedBox(
-                    height: 100.h,
-                    child: ListView.builder(
-                        itemCount: brands?.items?.length ?? 0,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          var brand = brands?.items?[index];
-                          return GestureDetector(
+                brands?.items?.length == 1
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: GestureDetector(
                             onTap: () {
-                              goToLink(brand?.url);
+                              goToLink(brands?.items?.first.url);
                             },
                             child: CustomImage(
-                              url: brand?.image,
-                              width: 100.w,
-                              height: 90.h,
+                              url: brands?.items?.first.image,
                             ),
-                          );
-                        })),
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        height: 100.h,
+                        child: ListView.builder(
+                            itemCount: brands?.items?.length ?? 0,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              var brand = brands?.items?[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  goToLink(brand?.url);
+                                },
+                                child: CustomImage(
+                                  url: brand?.image,
+                                  width: 100.w,
+                                  height: 90.h,
+                                ),
+                              );
+                            })),
               ],
             ),
           );

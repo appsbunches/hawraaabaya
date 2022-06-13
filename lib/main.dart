@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         designSize: const Size(375, 812),
-        builder: (context, child) => GetMaterialApp(
+        builder: (context,child) => GetMaterialApp(
           builder: (context, widget) {
             //add this line
             ScreenUtil.init(context);

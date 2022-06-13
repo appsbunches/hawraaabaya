@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:entaj/src/modules/_main/logic.dart';
 import 'package:entaj/src/modules/delivery_option/view.dart';
 import 'package:entaj/src/modules/faq/view.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,7 +42,7 @@ goToLink(String? link) async {
     Get.to(DeliveryOptionPage());
     return;
   }
-    if (link.contains('/blogs/') || link.contains('/pages/')) {
+  if (link.contains('/blogs/') || link.contains('/pages/')) {
     Get.to(PageDetailsPage(
       type: 5,
       title: null,
@@ -63,6 +64,9 @@ goToLink(String? link) async {
       Get.toNamed("/category-details/$categoryId");
       return;
     } catch (e) {
+      try {
+        Get.find<MainLogic>().changeSelectedValue(1, true, backCount: 0);
+      } catch (e) {}
       return;
     }
   } else if (link.contains('products')) {
@@ -75,11 +79,11 @@ goToLink(String? link) async {
       return;
     }
   }
-  if(Platform.isAndroid){
+  if (Platform.isAndroid) {
     if (await canLaunch(link)) {
       await launch(link);
     }
-  }else{
+  } else {
     if (await canLaunchUrl(Uri.parse(link))) {
       await launchUrl(Uri.parse(link));
     }
@@ -151,4 +155,3 @@ showMessage(String? text, int type) {
     backgroundColor: type == 1 ? Colors.green : Colors.yellow.shade700,
   );
 }
-

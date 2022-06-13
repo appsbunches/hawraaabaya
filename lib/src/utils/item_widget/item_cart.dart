@@ -13,7 +13,6 @@ import 'package:get/get.dart';
 
 import '../../colors.dart';
 import '../../modules/_main/tabs/cart/logic.dart';
-import '../functions.dart';
 
 class ItemCart extends cup.StatefulWidget {
   final Products product;
@@ -129,96 +128,98 @@ class _ItemCartState extends cup.State<ItemCart> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Row(
-                          children: [
-                            const Spacer(),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.grey.shade300, width: 1)),
-                              height: 35.h,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ClipRRect(
+                        if (widget.product.isPublished == true)
+                          Row(
+                            children: [
+                              const Spacer(),
+                              Container(
+                                decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    child: widget.product.quantity == 1 ||
-                                            widget.product.isProductPriceUpdated == true ||
-                                            widget.product.isOriginalQuantityFinished == true
-                                        ? InkWell(
-                                            onTap: () async {
-                                              if (isLoading) return;
-                                              isLoading = true;
-                                              setState(() {});
-                                              await _cartLogic.deleteItem(widget.product.id!);
-                                              isLoading = false;
-                                              setState(() {});
-                                            },
-                                            child: cup.SizedBox(
-                                              width: 40.w,
-                                              child: isLoading
-                                                  ? const cup.CupertinoActivityIndicator()
-                                                  : Image.asset(
-                                                      iconRemoveRed,
-                                                      scale: 2,
-                                                    ),
-                                            ))
-                                        : GestureDetector(
-                                            onTap: () => logic.decreaseQuantity(widget.product),
-                                            child: Container(
-                                                height: double.infinity,
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 5, horizontal: 10.w),
-                                                child: const Icon(
-                                                  Icons.remove,
-                                                  color: Colors.black,
-                                                )),
-                                          ),
-                                  ),
-                                  Container(
-                                      height: double.infinity,
-                                      width: 40.w,
-                                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0.w),
-                                      child: Center(
-                                          child: CustomText(
-                                        widget.product.isOriginalQuantityFinished == true
-                                            ? '0'
-                                            : widget.product.quantity.toString(),
-                                        fontWeight: FontWeight.bold,
-                                      ))),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: GestureDetector(
-                                      onTap: () => logic.increaseQuantity(widget.product),
-                                      child: Container(
-                                          height: double.infinity,
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft:
-                                                    Radius.circular(isArabicLanguage ? 0 : 15.sp),
-                                                topLeft:
-                                                    Radius.circular(isArabicLanguage ? 0 : 15.sp),
-                                                bottomRight:
-                                                    Radius.circular(isArabicLanguage ? 15.sp : 0),
-                                                topRight:
-                                                    Radius.circular(isArabicLanguage ? 15.sp : 0),
-                                              )),
-                                          padding:
-                                              EdgeInsets.symmetric(vertical: 5, horizontal: 10.w),
-                                          child: const Icon(
-                                            Icons.add,
-                                            color: Colors.black,
-                                          )),
+                                    border: Border.all(color: Colors.grey.shade300, width: 1)),
+                                height: 35.h,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: widget.product.quantity == 1 ||
+                                              widget.product.isProductPriceUpdated == true ||
+                                              widget.product.isOriginalQuantityFinished == true
+                                          ? InkWell(
+                                              onTap: () async {
+                                                if (isLoading) return;
+                                                isLoading = true;
+                                                setState(() {});
+                                                await _cartLogic.deleteItem(widget.product.id!);
+                                                isLoading = false;
+                                                setState(() {});
+                                              },
+                                              child: cup.SizedBox(
+                                                width: 40.w,
+                                                child: isLoading
+                                                    ? const cup.CupertinoActivityIndicator()
+                                                    : Image.asset(
+                                                        iconRemoveRed,
+                                                        scale: 2,
+                                                      ),
+                                              ))
+                                          : GestureDetector(
+                                              onTap: () => logic.decreaseQuantity(widget.product),
+                                              child: Container(
+                                                  height: double.infinity,
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 5, horizontal: 10.w),
+                                                  child: const Icon(
+                                                    Icons.remove,
+                                                    color: Colors.black,
+                                                  )),
+                                            ),
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                        height: double.infinity,
+                                        width: 40.w,
+                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0.w),
+                                        child: Center(
+                                            child: CustomText(
+                                          widget.product.isOriginalQuantityFinished == true
+                                              ? '0'
+                                              : widget.product.quantity.toString(),
+                                          fontWeight: FontWeight.bold,
+                                        ))),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: GestureDetector(
+                                        onTap: () => logic.increaseQuantity(widget.product),
+                                        child: Container(
+                                            height: double.infinity,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(isArabicLanguage ? 0 : 15.sp),
+                                                  topLeft:
+                                                      Radius.circular(isArabicLanguage ? 0 : 15.sp),
+                                                  bottomRight:
+                                                      Radius.circular(isArabicLanguage ? 15.sp : 0),
+                                                  topRight:
+                                                      Radius.circular(isArabicLanguage ? 15.sp : 0),
+                                                )),
+                                            padding:
+                                                EdgeInsets.symmetric(vertical: 5, horizontal: 10.w),
+                                            child: const Icon(
+                                              Icons.add,
+                                              color: Colors.black,
+                                            )),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
                         if (widget.product.isProductPriceUpdated == true ||
-                            widget.product.isOriginalQuantityFinished == true)
+                            widget.product.isOriginalQuantityFinished == true ||
+                            widget.product.isOriginalProductAvailable == false)
                           Container(
                             width: double.infinity,
                             decoration: cup.BoxDecoration(
@@ -232,14 +233,18 @@ class _ItemCartState extends cup.State<ItemCart> {
                                 CustomText(
                                   widget.product.isOriginalQuantityFinished == true
                                       ? 'نفذت الكمية'.tr
-                                      : 'تم تغيير سعر هذا المنتج'.tr,
+                                      : widget.product.isOriginalQuantityFinished == true
+                                          ? 'تم تغيير سعر هذا المنتج'.tr
+                                          : 'هذا المنتج لم يعد متوفراً'.tr,
                                   color: Colors.red.shade900,
                                   fontSize: 10,
                                 ),
                                 CustomText(
                                   widget.product.isOriginalQuantityFinished == true
                                       ? 'احذف المنتج لإتمام عملية الشراء'.tr
-                                      : 'قم بإضافته مرة أخرى بالضغط على المنتج'.tr,
+                                      : widget.product.isOriginalQuantityFinished == true
+                                          ? 'قم بإضافته مرة أخرى بالضغط على المنتج'.tr
+                                          : 'احذف المنتج لإتمام عملية الشراءً'.tr,
                                   color: Colors.red.shade900,
                                   fontSize: 10,
                                 ),

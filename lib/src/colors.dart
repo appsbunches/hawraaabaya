@@ -78,6 +78,11 @@ final baseColor = Colors.grey.shade100;
 final highlightColor = Colors.grey.shade300;
 const blueLightSplashBackgroundColor = Color.fromRGBO(255, 255, 255, 1.0);
 
+//New
+const backgroundDescriptionColor = '#dddddd';
+const foregroundDescriptionColor = '#000000';
+
+
 Map<int, Color> mapColor = {
   50: const Color.fromRGBO(51, 81, 76, .1),
   100: const Color.fromRGBO(51, 81, 76, .2),

@@ -27,16 +27,17 @@ class ProductsWidget extends StatelessWidget {
             featuredProducts?.items == null ||
             featuredProducts?.items?.length == 0)
         ? const SizedBox()
-        : Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: AppConfig.paddingBetweenWidget , horizontal: 15),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
+        : Padding(
+            padding: const EdgeInsets.symmetric(vertical: AppConfig.paddingBetweenWidget),
+            child: Column(
+              children: [
+                if (!(featuredProducts?.title == null &&
+                    title == null &&
+                    featuredProducts?.moreButton == null &&
+                    moreText == null))
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
                       children: [
                         Expanded(
                           flex: 3,
@@ -55,9 +56,10 @@ class ProductsWidget extends StatelessWidget {
                                 if (AppConfig.isSoreUseNewTheme) {
                                   if (featuredProducts?.url != null) {
                                     goToLink(featuredProducts?.url);
-                                  } else if(featuredProducts?.id != null && featuredProducts?.id != 'null'){
+                                  } else if (featuredProducts?.id != null &&
+                                      featuredProducts?.id != 'null') {
                                     Get.toNamed('/category-details/${featuredProducts?.id}');
-                                  }else{
+                                  } else {
                                     Get.toNamed('/category-details/arguments', arguments: {
                                       'name': featuredProducts?.title ?? '',
                                       'filter': featuredProducts?.moduleType,
@@ -90,32 +92,28 @@ class ProductsWidget extends StatelessWidget {
                           ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                  ],
+                  ),
+                AspectRatio(
+                  aspectRatio:
+                      featuredProducts?.items?.length == 2 || featuredProducts?.items?.length == 1
+                          ? 1.18
+                          : 1.32,
+                  child: ListView.builder(
+                      itemCount: featuredProducts?.items?.length ?? 0,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) => ItemProduct(featuredProducts!.items![index],
+                          width: featuredProducts?.items?.length == 2 ||
+                                  featuredProducts?.items?.length == 1
+                              ? 166
+                              : 140,
+                          backCount: 1,
+                          horizontal: true)),
                 ),
-              ),
-              AspectRatio(
-                aspectRatio:
-                    featuredProducts?.items?.length == 2 || featuredProducts?.items?.length == 1
-                        ? 1.18
-                        : 1.32,
-                child: ListView.builder(
-                    itemCount: featuredProducts?.items?.length ?? 0,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => ItemProduct(featuredProducts!.items![index],
-                        width: featuredProducts?.items?.length == 2 ||
-                                featuredProducts?.items?.length == 1
-                            ? 166
-                            : 140,
-                        backCount: 1,
-                        horizontal: true)),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-            ],
+                const SizedBox(
+                  height: 15,
+                ),
+              ],
+            ),
           );
   }
 }

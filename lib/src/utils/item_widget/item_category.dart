@@ -28,7 +28,7 @@ class ItemCategory extends StatelessWidget {
               Expanded(
                   flex: 3,
                   child: CustomImage(
-                    url: categoryModel?.image,
+                    url: categoryModel?.coverImage ?? categoryModel?.image,
                     width: double.infinity,
                     size: 30,
                   )),

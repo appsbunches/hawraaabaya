@@ -455,6 +455,7 @@ class Vat_settings {
   */
     vatNumber = json['vat_number'];
     taxRegistrationCertificate = json['tax_registration_certificate'];
+    isVatNumberVisible = json['is_vat_number_visible'];
     /*   if (json['settings'] != null) {
       settings = [];
       json['settings'].forEach((v) {
@@ -462,7 +463,6 @@ class Vat_settings {
       });
     }
     isCertificateVisible = json['is_certificate_visible'];
-    isVatNumberVisible = json['is_vat_number_visible'];
     canUseVat = json['can_use_vat'];
     vatActivate = json['vat_activate'];
     isVatSelfPaid = json['is_vat_self_paid'];
