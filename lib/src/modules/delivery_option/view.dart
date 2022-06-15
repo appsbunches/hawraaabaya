@@ -132,40 +132,40 @@ class DeliveryOptionPage extends StatelessWidget {
                                       ),
                                       logic.listShippingMethods[index].cost?.length == 1
                                           ? CustomText(
-                                        logic.listShippingMethods[index].cost?[0].costString,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                      )
-                                          : GridView.builder(
-                                        itemCount:
-                                            logic.listShippingMethods[index].cost?.length ?? 0,
-                                        shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        itemBuilder: (context, index1) {
-                                          var item = logic.listShippingMethods[index].cost?[index1];
-                                          return Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              CustomText(
-                                                item?.title ?? "تكلفة الشحن".tr,
-                                                fontWeight: FontWeight.bold,
-                                                color: secondaryColor,
-                                                fontSize: 10,
-                                              ),
-                                              CustomText(
-                                                item?.costString,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 14,
-                                              ),
-                                              const SizedBox()
-                                            ],
-                                          );
-                                        },
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2, childAspectRatio: 2.4),
-                                      ),
+                                              logic.listShippingMethods[index].cost?[0].costString,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            )
+                                          : ListView.builder(
+                                              itemCount:
+                                                  logic.listShippingMethods[index].cost?.length ??
+                                                      0,
+                                              shrinkWrap: true,
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              padding: EdgeInsets.zero,
+                                              itemBuilder: (context, index1) {
+                                                var item =
+                                                    logic.listShippingMethods[index].cost?[index1];
+                                                return Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    CustomText(
+                                                      item?.title ?? "تكلفة الشحن".tr,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: secondaryColor,
+                                                      fontSize: 10,
+                                                    ),
+                                                    CustomText(
+                                                      item?.costString,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 14,
+                                                    ),
+                                                    const SizedBox()
+                                                  ],
+                                                );
+                                              },
+                                            ),
                                       if (logic.listShippingMethods[index].codEnabled == true &&
                                           logic.listShippingMethods[index].codFee?.isNotEmpty ==
                                               true)
@@ -193,24 +193,24 @@ class DeliveryOptionPage extends StatelessWidget {
                                               true)
                                         logic.listShippingMethods[index].codFee?.length == 1
                                             ? CustomText(
-                                          logic.listShippingMethods[index].codFee?[0].codFeeString,
+                                                logic.listShippingMethods[index].codFee?[0]
+                                                    .codFeeString,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 14,
                                               )
-                                            : GridView.builder(
+                                            : ListView.builder(
                                                 itemCount: logic.listShippingMethods[index].codFee
                                                         ?.length ??
                                                     0,
                                                 shrinkWrap: true,
-                                                gridDelegate:
-                                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                                        crossAxisCount: 2, childAspectRatio: 2.4),
+                                                padding: EdgeInsets.zero,
                                                 physics: const NeverScrollableScrollPhysics(),
                                                 itemBuilder: (context, index1) {
                                                   var item = logic
                                                       .listShippingMethods[index].codFee?[index1];
                                                   return Column(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.spaceBetween,
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       CustomText(
