@@ -42,8 +42,8 @@ class CategoriesWidget extends StatelessWidget {
                               logic.homeScreenOldThemeModel?.payload?.menu?.items?[index])),
                     )
                   : Container(
-                      padding: const EdgeInsets.symmetric(vertical: AppConfig.paddingBetweenWidget),
-                      height: logic.categoriesList.isEmpty ? 0 : 38.h,
+                      margin: const EdgeInsets.symmetric(vertical: AppConfig.paddingBetweenWidget),
+                      height: logic.categoriesList.isEmpty ? 0 : 42.h,
                       child: ListView.builder(
                           itemCount: logic.categoriesList.length,
                           scrollDirection: Axis.horizontal,

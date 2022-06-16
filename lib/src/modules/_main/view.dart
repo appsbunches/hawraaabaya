@@ -158,7 +158,7 @@ class _MainPageState extends State<MainPage> {
                       child: Image.asset(iconSearch, scale: 2, color: headerForegroundColor)),
                 ],
                 title: Image.asset(
-                  iconLogoText,
+                  iconLogoAppBarEnd,
                   height: 40,
                   color: headerLogoColor,
                 ))

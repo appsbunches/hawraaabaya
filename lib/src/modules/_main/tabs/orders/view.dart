@@ -36,13 +36,15 @@ class OrdersPage extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-            child: Image.asset(iconLogo , color: headerLogoColor,),
+            child: Image.asset(
+              iconLogoAppBarEnd,
+              color: headerLogoColor,
+            ),
           )
         ],
       ),
       body: Column(
         children: [
-
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async => logic.getOrders(),
@@ -57,8 +59,7 @@ class OrdersPage extends StatelessWidget {
                                   width: double.infinity,
                                   height: 500.h,
                                   alignment: Alignment.center,
-                                  padding:
-                                      const EdgeInsets.only(left: 50, right: 50),
+                                  padding: const EdgeInsets.only(left: 50, right: 50),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -84,7 +85,7 @@ class OrdersPage extends StatelessWidget {
                                 ),
                               )
                             : logic.loading
-                                ?const CustomProgressIndicator() /* Shimmer.fromColors(
+                                ? const CustomProgressIndicator() /* Shimmer.fromColors(
                                     baseColor: baseColor,
                                     highlightColor: highlightColor,
                                     child: Container(
@@ -98,117 +99,108 @@ class OrdersPage extends StatelessWidget {
                                           width: double.infinity,
                                         )))*/
                                 : Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-                                  child: logic.orderList.isEmpty
-                                      ? const SizedBox()
-                                      : DropdownButtonHideUnderline(
-                                          child: DropdownButton2(
-                                            iconSize: 0,
-                                            dropdownDecoration: BoxDecoration(
-                                              color: dropdownColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(15.sp),
-                                            ),
-                                            itemPadding: EdgeInsets.zero,
-                                            dropdownPadding: EdgeInsets.zero,
-                                            itemHeight: 60.h,
-                                            scrollbarAlwaysShow: true,
-                                            isExpanded: true,
-                                            selectedItemBuilder: (con) {
-                                              return logic.orderStatusList
-                                                  .map((selectedType) {
-                                                return Container(
-                                                    height: double.infinity,
-                                                    decoration: BoxDecoration(
-                                                    color: Colors.grey.shade200,
-                                                    borderRadius: BorderRadius.circular(15.sp)),
-                                                    padding: const EdgeInsets.symmetric(
-                                                        horizontal: 10, vertical: 10),
-                                                    child: Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: CustomText(
-                                                            selectedType,
-                                                            fontSize: 12,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ));
-                                              }).toList();
-                                            },
-                                            hint: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey.shade100,
-                                                  borderRadius:
-                                                      BorderRadius.circular(15.sp)),
-                                              padding: const EdgeInsets.all(12),
-                                              child: Row(
-                                                children: [
-                                                  Image.asset(
-                                                    iconOrders,
-                                                    scale: 2,
-                                                    color: primaryColor,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  CustomText(
-                                                    "طلباتي".tr,
-                                                    color: primaryColor,
-                                                  ),
-                                                  const Spacer(),
-                                                  const Icon(
-                                                    Icons.keyboard_arrow_down,
-                                                    color: primaryColor,
-                                                  )
-                                                ],
+                                    padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                                    child: logic.orderList.isEmpty
+                                        ? const SizedBox()
+                                        : DropdownButtonHideUnderline(
+                                            child: DropdownButton2(
+                                              iconSize: 0,
+                                              dropdownDecoration: BoxDecoration(
+                                                color: dropdownColor,
+                                                borderRadius: BorderRadius.circular(15.sp),
                                               ),
-                                            ),
-                                            onChanged: (newValue) {
-                                              logic.setSelected(newValue);
-                                            },
-                                            value: logic.selected,
-                                            items: logic.orderStatusList
-                                                .map((selectedType) {
-                                              return DropdownMenuItem(
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                              itemPadding: EdgeInsets.zero,
+                                              dropdownPadding: EdgeInsets.zero,
+                                              itemHeight: 60.h,
+                                              scrollbarAlwaysShow: true,
+                                              isExpanded: true,
+                                              selectedItemBuilder: (con) {
+                                                return logic.orderStatusList.map((selectedType) {
+                                                  return Container(
+                                                      height: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.grey.shade200,
+                                                          borderRadius:
+                                                              BorderRadius.circular(15.sp)),
+                                                      padding: const EdgeInsets.symmetric(
+                                                          horizontal: 10, vertical: 10),
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: CustomText(
+                                                              selectedType,
+                                                              fontSize: 12,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ));
+                                                }).toList();
+                                              },
+                                              hint: Container(
+                                                decoration: BoxDecoration(
+                                                    color: Colors.grey.shade100,
+                                                    borderRadius: BorderRadius.circular(15.sp)),
+                                                padding: const EdgeInsets.all(12),
+                                                child: Row(
                                                   children: [
-                                                    const Spacer(),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 15),
-                                                      child: CustomText(
-                                                        selectedType,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        fontSize: 10,
-                                                        color: dropdownTextColor,
-                                                      ),
+                                                    Image.asset(
+                                                      iconOrders,
+                                                      scale: 2,
+                                                      color: primaryColor,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    CustomText(
+                                                      "طلباتي".tr,
+                                                      color: primaryColor,
                                                     ),
                                                     const Spacer(),
-                                                    if (selectedType !=
-                                                        logic.orderStatusList[
-                                                            logic.orderStatusList
-                                                                    .length -
-                                                                1])
-                                                      Container(
-                                                        height: 1,
-                                                        color:
-                                                            dropdownDividerLineColor,
-                                                      )
+                                                    const Icon(
+                                                      Icons.keyboard_arrow_down,
+                                                      color: primaryColor,
+                                                    )
                                                   ],
                                                 ),
-                                                value: selectedType,
-                                              );
-                                            }).toList(),
+                                              ),
+                                              onChanged: (newValue) {
+                                                logic.setSelected(newValue);
+                                              },
+                                              value: logic.selected,
+                                              items: logic.orderStatusList.map((selectedType) {
+                                                return DropdownMenuItem(
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      const Spacer(),
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(
+                                                            horizontal: 15),
+                                                        child: CustomText(
+                                                          selectedType,
+                                                          textAlign: TextAlign.center,
+                                                          fontSize: 10,
+                                                          color: dropdownTextColor,
+                                                        ),
+                                                      ),
+                                                      const Spacer(),
+                                                      if (selectedType !=
+                                                          logic.orderStatusList[
+                                                              logic.orderStatusList.length - 1])
+                                                        Container(
+                                                          height: 1,
+                                                          color: dropdownDividerLineColor,
+                                                        )
+                                                    ],
+                                                  ),
+                                                  value: selectedType,
+                                                );
+                                              }).toList(),
+                                            ),
                                           ),
-                                        ),
-                                )),
+                                  )),
                     const SizedBox(
                       height: 15,
                     ),
@@ -221,17 +213,14 @@ class OrdersPage extends StatelessWidget {
                                   child: ListView.builder(
                                       itemCount: 20,
                                       padding: EdgeInsets.zero,
-                                      itemBuilder: (context, index) =>
-                                          ItemOrder(index, null)))
+                                      itemBuilder: (context, index) => ItemOrder(index, null)))
                               : logic.orderList.isEmpty && logic.isLogin
                                   ? Container(
                                       width: double.infinity,
-                                      padding: const EdgeInsets.only(
-                                          left: 50, right: 50),
+                                      padding: const EdgeInsets.only(left: 50, right: 50),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Image.asset(
                                             iconOrders,
@@ -249,8 +238,8 @@ class OrdersPage extends StatelessWidget {
                                   : ListView.builder(
                                       itemCount: logic.orderList.length,
                                       padding: EdgeInsets.zero,
-                                      itemBuilder: (context, index) => ItemOrder(
-                                          index, logic.orderList[index])));
+                                      itemBuilder: (context, index) =>
+                                          ItemOrder(index, logic.orderList[index])));
                     })
                   ],
                 ),

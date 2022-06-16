@@ -31,7 +31,8 @@ class GalleryWidget extends StatelessWidget {
               builder: (logic) {
                 logic.getGallery();
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: AppConfig.paddingBetweenWidget , horizontal: 10),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: AppConfig.paddingBetweenWidget, horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -58,19 +59,21 @@ class GalleryWidget extends StatelessWidget {
                                       padding: const EdgeInsets.only(bottom: 15),
                                       child: buildClipRRect(galleryItems[index]),
                                     ))
-                          : StaggeredGrid.count(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              children: mapIndexed(
-                                  galleryItems,
-                                  (index, item) => StaggeredGridTile.count(
-                                      crossAxisCellCount:
-                                          galleryItems.length.isOdd && index == 0 ? 2 : 1,
-                                      mainAxisCellCount:
-                                          galleryItems.length.isOdd && index == 0 ? 2 : 1,
-                                      child: buildClipRRect(galleryItems[index]))).toList(),
-                            ) /*GridView.builder(
+                          : galleryItems.length == 1
+                              ? buildClipRRect(galleryItems[0])
+                              : StaggeredGrid.count(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                  children: mapIndexed(
+                                      galleryItems,
+                                      (index, item) => StaggeredGridTile.count(
+                                          crossAxisCellCount:
+                                              galleryItems.length.isOdd && index == 0 ? 2 : 1,
+                                          mainAxisCellCount:
+                                              galleryItems.length.isOdd && index == 0 ? 2 : 1,
+                                          child: buildClipRRect(galleryItems[index]))).toList(),
+                                ) /*GridView.builder(
                               itemCount: galleryItems.length,
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,

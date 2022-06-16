@@ -428,34 +428,33 @@ class ProductDetailsLogic extends GetxController with WidgetsBindingObserver {
           update(['quantity']);
         }
       });
-      log('##### ==> ' + (productModel?.id ?? ''));
       getIndividualBundleOffer(productModel?.id, productId);
       List<String> productRelatedIds = [];
-      // productRelatedIds.add(productId);
       productModel?.relatedProducts?.forEach((element) {
         productRelatedIds.add(element.id ?? '');
       });
       await getSimpleBundleOffer(productRelatedIds);
 
-      _appEvents.logOpenProduct(
-          name: productModel?.name, price: productModel?.formattedPrice, productId: productId);
-
       productModel?.options?.forEach((element) {
-        if (element.choices?.isNotEmpty == true) {
-          onChangeOption(element.choices?[0], element, withUpdate: false);
-
-          if (productModel?.quantity == 0) {
-            var exist = false;
-            for (var i = 0; i < (element.choices?.length ?? 0); i++) {
-              if (!exist) {
-                onChangeOption(element.choices?[i], element, withUpdate: false);
-              }
-              if (productModel?.quantity != 0) exist = true;
+        productModel?.options?.forEach((elementOption) {
+          if (elementOption.choices?.isNotEmpty == true) {
+            onChangeOption(elementOption.choices?[0], elementOption, withUpdate: false);
+            if (productModel?.quantity == 0) {
+              var exist = false;
+              elementOption.choices?.forEach((elementChoice) {
+                if (!exist) {
+                  onChangeOption(elementChoice, elementOption, withUpdate: false);
+                }
+                if (productModel?.quantity != 0) exist = true;
+              });
             }
           }
-        }
+        });
       });
       getDescription(all: false);
+
+      _appEvents.logOpenProduct(
+          name: productModel?.name, price: productModel?.formattedPrice, productId: productId);
     } catch (e) {
       try {
         if (e is dio.DioError) {

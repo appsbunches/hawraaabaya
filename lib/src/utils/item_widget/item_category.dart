@@ -9,8 +9,9 @@ import 'package:get/get.dart';
 class ItemCategory extends StatelessWidget {
   final CategoryModel? categoryModel;
   final double? width;
+  final bool showCover;
 
-  const ItemCategory(this.categoryModel, this.width);
+  const ItemCategory(this.categoryModel, this.width, {required this.showCover});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,9 @@ class ItemCategory extends StatelessWidget {
               Expanded(
                   flex: 3,
                   child: CustomImage(
-                    url: categoryModel?.coverImage ?? categoryModel?.image,
+                    url: showCover
+                        ? categoryModel?.coverImage ?? categoryModel?.image
+                        : categoryModel?.image ?? categoryModel?.coverImage,
                     width: double.infinity,
                     size: 30,
                   )),

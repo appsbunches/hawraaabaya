@@ -505,7 +505,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
                               crossAxisSpacing: 8,
                               mainAxisSpacing: 8,
                               childAspectRatio: 1),
-                          itemBuilder: (context, index) => ItemCategory(subCategories[index], 100))
+                          itemBuilder: (context, index) => ItemCategory(subCategories[index], 100 , showCover:false))
                       : SizedBox(
                           height: subCategories.isEmpty
                               ? 0
@@ -523,7 +523,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> with WidgetsB
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (context, index) {
                                       return AppConfig.showSubCategoriesAsGrid
-                                          ? ItemCategory(subCategories[index], 120)
+                                          ? ItemCategory(subCategories[index], 120 , showCover: false,)
                                           : ItemHomeCategory(subCategories[index]);
                                     }),
                               ),

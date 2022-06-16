@@ -48,8 +48,19 @@ class MainLogic extends GetxController {
   @override
   void onInit() async {
     log("INIT ==> MainLogic");
-//    OneSignal.shared.setNotificationOpenedHandler(_handleNotificationOpened);
-
+    OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      print('"OneSignal: notification opened: ${result}');
+    });
+    OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent event) {
+      print('"OneSignal: setNotificationWillShowInForegroundHandler opened: ${event}');
+      var additionalData = event.notification.additionalData;
+      if(additionalData != null){
+        if(additionalData.containsKey("url")){
+          goToLink(event.notification.additionalData?['url']);
+        }
+      }
+      event.complete(event.notification);
+    });
     var subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       if (result != ConnectivityResult.none) {
         if (!hasInternet) {

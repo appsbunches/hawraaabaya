@@ -97,7 +97,7 @@ class CategoriesPage extends StatelessWidget {
                                           mainAxisSpacing: 15,
                                           childAspectRatio: 1),
                                       itemBuilder: (context, index) =>
-                                          ItemCategory(logic.categoriesList[index], null));
+                                          ItemCategory(logic.categoriesList[index], null , showCover: true,));
                         })
                   ],
                 ),

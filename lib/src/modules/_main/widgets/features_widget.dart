@@ -32,6 +32,7 @@ class FeaturesWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(15.0),
                         child: CustomImage(
                           url: e.image,
+                          showErrorImage: false,
                           width: AppConfig.featureSize,
                           height: AppConfig.featureSize,
                         ),

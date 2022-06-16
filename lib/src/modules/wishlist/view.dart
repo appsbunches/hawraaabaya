@@ -50,7 +50,7 @@ class _WishlistPageState extends State<WishlistPage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
               child: Image.asset(
-                iconLogo,
+                iconLogoAppBarEnd,
                 color: headerLogoColor,
               ),
             ),
@@ -73,7 +73,7 @@ class _WishlistPageState extends State<WishlistPage> {
                             Image.asset(
                               iconLogoFull,
                               height: 85.h,
-                              fit: BoxFit.fitHeight,
+                              fit: BoxFit.contain,
                             ),
                             SizedBox(
                               height: 40.h,

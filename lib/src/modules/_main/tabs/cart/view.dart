@@ -58,7 +58,7 @@ class CartPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                       child: Image.asset(
-                        iconLogo,
+                        iconLogoAppBarEnd,
                         color: headerLogoColor,
                       ),
                     ),

@@ -49,6 +49,9 @@ const buttonBackgroundCouponColor =
     AppConfig.showButtonWithBorder ? Colors.white : primaryColor;
 const buttonTextCouponColor =
     AppConfig.showButtonWithBorder ? primaryColor : Colors.white;
+
+const iconAddToCartColor = AppConfig.showButtonWithBorder ? primaryColor : Colors.white;
+
 //Call
 const buttonBackgroundCallColor = primaryColor;
 const buttonTextCallColor = Colors.white;
